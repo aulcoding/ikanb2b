@@ -1,0 +1,1756 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>
+      Balong Ceuyah — Supplier Ikan untuk Kolam Pemancingan, Toko Ikan,
+      Restoran &amp; Rumah Makan
+    </title>
+    <meta
+      name="description"
+      content="Supplier ikan untuk kolam pemancingan, toko ikan segar, restoran, dan rumah makan. Melayani pengiriman ke area layanan dengan harga grosir."
+    />
+
+    <!-- Font di-self-host (blueprint 1.9). Berkas terpisah agar path url() tidak diproses ulang saat build CSS. -->
+    <link
+      rel="preload"
+      href="assets/fonts/fraunces-latin-var.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="assets/fonts/oswald-latin-var.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link rel="stylesheet" href="assets/fonts/fonts.css" />
+    <link rel="stylesheet" href="assets/styles.css" />
+  </head>
+
+  <body>
+    <a class="skip-link t-body" href="#konten">Lewati ke konten utama</a>
+
+    <!-- ===== Banner staging =====
+       Bukan bagian dari blueprint dan bukan section konten.
+       Muncul selama data/business.json masih berstatus CONTOH,
+       hilang otomatis saat _meta.dataStatus diubah menjadi "ASLI". -->
+    
+    <div class="staging-banner t-label" role="note">
+      DATA CONTOH — belum boleh dipublikasikan.
+    </div>
+    
+
+    <!-- ===== 1. Navbar ===== -->
+    <header class="site-header">
+      <div class="container-std">
+        <div class="site-header__bar">
+          <!-- Wordmark tipografis. Tidak ada logo ikan generik (blueprint 7.1). -->
+          <a class="wordmark" href="#konten">
+            <span class="wordmark__name">Balong Ceuyah</span>
+            <span class="wordmark__desc t-label hidden lg:block"
+              >Supplier &amp; Distributor Ikan</span
+            >
+          </a>
+
+          <!-- Navigasi desktop: empat tautan, tidak lebih. -->
+          <nav class="hidden lg:block" aria-label="Navigasi utama">
+            <ul class="flex items-center gap-7">
+              <li><a class="nav-link" data-press="warna" href="#jenis-ikan">Jenis Ikan</a></li>
+              <li>
+                <a class="nav-link" data-press="warna" href="#ketentuan-supply"
+                  >Ketentuan Supply</a
+                >
+              </li>
+              <li><a class="nav-link" data-press="warna" href="#cara-pesan">Cara Pesan</a></li>
+              <li><a class="nav-link" data-press="warna" href="#faq">FAQ</a></li>
+            </ul>
+          </nav>
+
+          <div class="flex items-center gap-2">
+            <!-- Tombol aksi tampil mulai tablet; di mobile digantikan bar sticky. -->
+            <a
+              class="btn-action btn-action--nav t-button hidden md:inline-flex" data-press
+              href="https://wa.me/6281234567890?text=Halo%20Balong%20Ceuyah%2C%20saya%20ingin%20menanyakan%20stok%20dan%20harga%20ikan%20untuk%20kebutuhan%20usaha.%20Jenis%20ikan%3A%20%E2%80%A6%20%2F%20Ukuran%3A%20%E2%80%A6%20%2F%20Perkiraan%20jumlah%3A%20%E2%80%A6%20%2F%20Lokasi%3A%20%E2%80%A6%20%2F%20Dibutuhkan%20tanggal%3A%20%E2%80%A6"
+              target="_blank"
+              rel="noopener"
+            >
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+                focusable="false"
+              >
+                <path
+                  d="M20.5 11.6a8.5 8.5 0 0 1-12.4 7.6L3.5 20.5l1.4-4.4A8.5 8.5 0 1 1 20.5 11.6Z"
+                />
+                <path
+                  d="M9 9.3c.4 1.5 1.6 2.9 3.1 3.6l.9-.9 2 .9v1.4c-.1.4-.5.6-.9.6-3-.3-5.4-2.7-5.7-5.7 0-.4.2-.8.6-.9h1.4l.9 2-.9.9"
+                />
+              </svg>
+              Tanya Stok &amp; Harga
+            </a>
+
+            <button
+              class="nav-toggle lg:hidden" data-press
+              id="nav-toggle"
+              type="button"
+              aria-expanded="false"
+              aria-controls="nav-panel"
+              aria-label="Buka menu navigasi"
+            >
+              <svg
+                id="icon-menu"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                aria-hidden="true"
+                focusable="false"
+              >
+                <path d="M4 7h16M4 12h16M4 17h16" />
+              </svg>
+              <svg
+                id="icon-close"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                aria-hidden="true"
+                focusable="false"
+                hidden
+              >
+                <path d="M6 6l12 12M18 6L6 18" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sheet menu mobile & tablet.
+         Menggantung dari navbar, bukan mengambil alih layar: ia muncul dari
+         tempat tombolnya berada dan pergi ke arah yang sama. Bisa ditarik
+         ke atas dengan jari untuk ditutup (lihat main.js). -->
+      <div class="nav-sheet" id="nav-panel" hidden>
+        <div class="container-std">
+          <nav aria-label="Navigasi utama (mobile)">
+            <ul>
+              <li>
+                <a class="nav-sheet__link" data-press="warna" href="#jenis-ikan">Jenis Ikan</a>
+              </li>
+              <li>
+                <a class="nav-sheet__link" data-press="warna" href="#ketentuan-supply"
+                  >Ketentuan Supply</a
+                >
+              </li>
+              <li>
+                <a class="nav-sheet__link" data-press="warna" href="#cara-pesan">Cara Pesan</a>
+              </li>
+              <li><a class="nav-sheet__link" data-press="warna" href="#faq">FAQ</a></li>
+            </ul>
+          </nav>
+          <a
+            class="btn-action btn-action--block t-button mt-6 md:hidden" data-press="lembut"
+            href="https://wa.me/6281234567890?text=Halo%20Balong%20Ceuyah%2C%20saya%20ingin%20menanyakan%20stok%20dan%20harga%20ikan%20untuk%20kebutuhan%20usaha.%20Jenis%20ikan%3A%20%E2%80%A6%20%2F%20Ukuran%3A%20%E2%80%A6%20%2F%20Perkiraan%20jumlah%3A%20%E2%80%A6%20%2F%20Lokasi%3A%20%E2%80%A6%20%2F%20Dibutuhkan%20tanggal%3A%20%E2%80%A6"
+            target="_blank"
+            rel="noopener"
+          >
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <path
+                d="M20.5 11.6a8.5 8.5 0 0 1-12.4 7.6L3.5 20.5l1.4-4.4A8.5 8.5 0 1 1 20.5 11.6Z"
+              />
+              <path
+                d="M9 9.3c.4 1.5 1.6 2.9 3.1 3.6l.9-.9 2 .9v1.4c-.1.4-.5.6-.9.6-3-.3-5.4-2.7-5.7-5.7 0-.4.2-.8.6-.9h1.4l.9 2-.9.9"
+              />
+            </svg>
+            Tanya Stok &amp; Harga
+          </a>
+        </div>
+
+        <!-- Pegangan di bibir bawah sheet. Bentuknya sendiri yang memberi
+           tahu bahwa benda ini bisa ditarik, tanpa perlu tulisan. -->
+        <div class="nav-sheet__handle" aria-hidden="true"></div>
+      </div>
+    </header>
+
+    <!-- Kelambu peredup. Menu adalah tugas yang memblokir, jadi halaman di
+       belakangnya diredupkan; chrome navbar sendiri TIDAK diredupkan karena
+       ia bagian dari tugas itu. Opasitasnya mengikuti posisi sheet secara
+       terus-menerus, bukan menyala sekaligus di akhir. -->
+    <div class="nav-scrim" id="nav-scrim" hidden></div>
+
+    <main id="konten">
+      <!-- ===== 2. Hero ===== -->
+      <section class="hero" aria-labelledby="hero-title">
+        <!-- Foto full-bleed. Selama foto asli belum ada, yang tampil adalah
+           slot kosong berdimensi final - bukan gambar pengganti. -->
+        <div class="hero__media">
+          
+          <img
+            src="assets/img/web/nila-monyong-tiny-web.webp"
+            alt="Ikan Nila segar berkualitas"
+            width="1600"
+            height="1067"
+            fetchpriority="high"
+            decoding="async"
+          />
+          
+          
+        </div>
+
+        <div class="container-std">
+          <div class="lg:grid lg:grid-cols-12">
+            <div class="hero__panel lg:col-span-7">
+              <h1 id="hero-title" class="t-h1">
+                Stok ikan aman, bisnismu juga aman.
+              </h1>
+
+              <p class="t-lead measure mt-5 text-ink-muted">
+                Pasokan rutin untuk kolam pemancingan, toko ikan, restoran, dan
+                rumah makan.
+              </p>
+
+              <!-- Strip fakta operasional. Butir yang datanya belum ada tidak dirender. -->
+              <dl class="hero__strip mt-6">
+                <div>
+                  <dt class="t-label">Area pengiriman</dt>
+                  <dd class="t-data">Seluruh Jawa Barat</dd>
+                </div>
+                <div>
+                  <dt class="t-label">Minimum order</dt>
+                  <dd class="t-data">Mulai 30 kg</dd>
+                </div>
+                <div>
+                  <dt class="t-label">Jam operasional</dt>
+                  <dd class="t-data">Setiap hari, 05.00–20.00 WIB</dd>
+                </div>
+                
+              </dl>
+
+              <div
+                class="mt-6 flex flex-col gap-3 lg:flex-row lg:items-center lg:gap-6"
+              >
+                <a
+                  class="btn-action t-button" data-press
+                  href="https://wa.me/6281234567890?text=Halo%20Balong%20Ceuyah%2C%20saya%20ingin%20menanyakan%20stok%20dan%20harga%20ikan%20untuk%20kebutuhan%20usaha.%20Jenis%20ikan%3A%20%E2%80%A6%20%2F%20Ukuran%3A%20%E2%80%A6%20%2F%20Perkiraan%20jumlah%3A%20%E2%80%A6%20%2F%20Lokasi%3A%20%E2%80%A6%20%2F%20Dibutuhkan%20tanggal%3A%20%E2%80%A6"
+                  target="_blank"
+                  rel="noopener"
+                >
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                    focusable="false"
+                  >
+                    <path
+                      d="M20.5 11.6a8.5 8.5 0 0 1-12.4 7.6L3.5 20.5l1.4-4.4A8.5 8.5 0 1 1 20.5 11.6Z"
+                    />
+                    <path
+                      d="M9 9.3c.4 1.5 1.6 2.9 3.1 3.6l.9-.9 2 .9v1.4c-.1.4-.5.6-.9.6-3-.3-5.4-2.7-5.7-5.7 0-.4.2-.8.6-.9h1.4l.9 2-.9.9"
+                    />
+                  </svg>
+                  Tanya Stok &amp; Harga
+                </a>
+                <a class="link-secondary t-body" href="#jenis-ikan"
+                  >Lihat Jenis Ikan</a
+                >
+              </div>
+
+              <p class="t-caption mt-3 text-ink-muted">
+                Cek stok tanpa komitmen.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 3. Jenis Ikan & Ukuran ===== -->
+      <section
+        id="jenis-ikan"
+        class="sec-rapat"
+        aria-labelledby="jenis-ikan-title"
+      >
+        <div class="container-std">
+          <header class="section-head">
+            <span class="section-head__label t-label">Produk</span>
+            <h2 id="jenis-ikan-title" class="section-head__title t-h2">
+              Jenis Ikan &amp; Ukuran
+            </h2>
+            <p class="section-head__intro t-body measure">
+              Ukuran ditulis dalam satuan yang biasa dipakai pembeli.
+              Ketersediaan mengikuti hasil panen.
+            </p>
+          </header>
+
+          <!-- Filter hanya diadakan bila jenis ikan >= 8 (blueprint 7.3). -->
+          
+
+          <!-- Judul kolom desktop. Dekoratif bagi pembaca layar: setiap nilai
+             di dalam baris sudah membawa labelnya sendiri. -->
+          <div class="product-head t-label" aria-hidden="true">
+            <span></span>
+            <span>Ikan</span>
+            <span>Ukuran</span>
+            <span>Ketersediaan</span>
+            <span></span>
+          </div>
+
+          <ul class="product-list" id="product-list">
+            
+            <li class="product-row" data-kategori="konsumsi">
+              <div class="product-row__media">
+                
+                <img
+                  src="assets/img/web/nils-es-web.webp"
+                  alt="Ikan Nila siap kirim"
+                  width="400"
+                  height="400"
+                  loading="lazy"
+                  decoding="async"
+                />
+                
+                
+              </div>
+
+              <h3 class="product-row__name t-h3">Ikan Nila</h3>
+
+              <p class="product-row__spec t-data">
+                <span class="sr-only">Ukuran: </span>500–700 gram/ekor
+              </p>
+
+              
+              <p
+                class="product-row__status status status--tersedia t-caption"
+              >
+                <span class="sr-only">Ketersediaan: </span>Tersedia
+              </p>
+              
+
+              <p class="product-row__use t-caption">Ukuran konsumsi untuk rumah makan dan toko ikan segar.</p>
+
+              
+              <p class="product-row__min t-caption">
+                Minimum order 30 kg
+              </p>
+              
+
+              <a
+                class="product-row__cta btn-action btn-action--row btn-action--block md:w-auto t-button" data-press="lembut"
+                href="https://wa.me/6281234567890?text=Halo%20Balong%20Ceuyah%2C%20saya%20ingin%20menanyakan%20stok%20dan%20harga%20Ikan%20Nila.%20Ukuran%3A%20%E2%80%A6%20%2F%20Perkiraan%20jumlah%3A%20%E2%80%A6%20%2F%20Lokasi%3A%20%E2%80%A6"
+                target="_blank"
+                rel="noopener"
+              >
+                Tanya Harga<span class="sr-only"> Ikan Nila</span>
+              </a>
+            </li>
+            
+            <li class="product-row" data-kategori="konsumsi">
+              <div class="product-row__media">
+                
+                <img
+                  src="assets/img/web/lele-2-tiny-web.webp"
+                  alt="Ikan Lele siap kirim"
+                  width="400"
+                  height="400"
+                  loading="lazy"
+                  decoding="async"
+                />
+                
+                
+              </div>
+
+              <h3 class="product-row__name t-h3">Ikan Lele</h3>
+
+              <p class="product-row__spec t-data">
+                <span class="sr-only">Ukuran: </span>8–10 ekor/kg
+              </p>
+
+              
+              <p
+                class="product-row__status status status--tersedia t-caption"
+              >
+                <span class="sr-only">Ketersediaan: </span>Tersedia
+              </p>
+              
+
+              <p class="product-row__use t-caption">Ukuran warung dan rumah makan harian.</p>
+
+              
+              <p class="product-row__min t-caption">
+                Minimum order 30 kg
+              </p>
+              
+
+              <a
+                class="product-row__cta btn-action btn-action--row btn-action--block md:w-auto t-button" data-press="lembut"
+                href="https://wa.me/6281234567890?text=Halo%20Balong%20Ceuyah%2C%20saya%20ingin%20menanyakan%20stok%20dan%20harga%20Ikan%20Lele.%20Ukuran%3A%20%E2%80%A6%20%2F%20Perkiraan%20jumlah%3A%20%E2%80%A6%20%2F%20Lokasi%3A%20%E2%80%A6"
+                target="_blank"
+                rel="noopener"
+              >
+                Tanya Harga<span class="sr-only"> Ikan Lele</span>
+              </a>
+            </li>
+            
+            <li class="product-row" data-kategori="konsumsi">
+              <div class="product-row__media">
+                
+                <img
+                  src="assets/img/web/Ikan-Gurame-Soang-web.webp"
+                  alt="Ikan Gurame siap kirim"
+                  width="400"
+                  height="400"
+                  loading="lazy"
+                  decoding="async"
+                />
+                
+                
+              </div>
+
+              <h3 class="product-row__name t-h3">Ikan Gurame</h3>
+
+              <p class="product-row__spec t-data">
+                <span class="sr-only">Ukuran: </span>500 gram – 1 kg/ekor
+              </p>
+
+              
+              <p
+                class="product-row__status status status--terbatas t-caption"
+              >
+                <span class="sr-only">Ketersediaan: </span>Stok terbatas
+              </p>
+              
+
+              <p class="product-row__use t-caption">Menu gurame bakar dan goreng di restoran.</p>
+
+              
+              <p class="product-row__min t-caption">
+                Minimum order 20 kg
+              </p>
+              
+
+              <a
+                class="product-row__cta btn-action btn-action--row btn-action--block md:w-auto t-button" data-press="lembut"
+                href="https://wa.me/6281234567890?text=Halo%20Balong%20Ceuyah%2C%20saya%20ingin%20menanyakan%20stok%20dan%20harga%20Ikan%20Gurame.%20Ukuran%3A%20%E2%80%A6%20%2F%20Perkiraan%20jumlah%3A%20%E2%80%A6%20%2F%20Lokasi%3A%20%E2%80%A6"
+                target="_blank"
+                rel="noopener"
+              >
+                Tanya Harga<span class="sr-only"> Ikan Gurame</span>
+              </a>
+            </li>
+            
+            <li class="product-row" data-kategori="pancing">
+              <div class="product-row__media">
+                
+                <img
+                  src="assets/img/web/ikan-mas-kolam-web.webp"
+                  alt="Ikan Mas siap kirim"
+                  width="400"
+                  height="400"
+                  loading="lazy"
+                  decoding="async"
+                />
+                
+                
+              </div>
+
+              <h3 class="product-row__name t-h3">Ikan Mas</h3>
+
+              <p class="product-row__spec t-data">
+                <span class="sr-only">Ukuran: </span>300–800 gram/ekor
+              </p>
+
+              
+              <p
+                class="product-row__status status status--tersedia t-caption"
+              >
+                <span class="sr-only">Ketersediaan: </span>Tersedia
+              </p>
+              
+
+              <p class="product-row__use t-caption">Isi kolam pemancingan harian.</p>
+
+              
+              <p class="product-row__min t-caption">
+                Minimum order 50 kg
+              </p>
+              
+
+              <a
+                class="product-row__cta btn-action btn-action--row btn-action--block md:w-auto t-button" data-press="lembut"
+                href="https://wa.me/6281234567890?text=Halo%20Balong%20Ceuyah%2C%20saya%20ingin%20menanyakan%20stok%20dan%20harga%20Ikan%20Mas.%20Ukuran%3A%20%E2%80%A6%20%2F%20Perkiraan%20jumlah%3A%20%E2%80%A6%20%2F%20Lokasi%3A%20%E2%80%A6"
+                target="_blank"
+                rel="noopener"
+              >
+                Tanya Harga<span class="sr-only"> Ikan Mas</span>
+              </a>
+            </li>
+            
+            <li class="product-row" data-kategori="konsumsi">
+              <div class="product-row__media">
+                
+                
+                <div
+                  class="photo-slot"
+                  style="width: 100%; height: 100%"
+                  aria-hidden="true"
+                ></div>
+                
+              </div>
+
+              <h3 class="product-row__name t-h3">Ikan Patin</h3>
+
+              <p class="product-row__spec t-data">
+                <span class="sr-only">Ukuran: </span>700 gram – 1,2 kg/ekor
+              </p>
+
+              
+              <p
+                class="product-row__status status status--tersedia t-caption"
+              >
+                <span class="sr-only">Ketersediaan: </span>Tersedia
+              </p>
+              
+
+              <p class="product-row__use t-caption">Menu pindang dan olahan fillet.</p>
+
+              
+
+              <a
+                class="product-row__cta btn-action btn-action--row btn-action--block md:w-auto t-button" data-press="lembut"
+                href="https://wa.me/6281234567890?text=Halo%20Balong%20Ceuyah%2C%20saya%20ingin%20menanyakan%20stok%20dan%20harga%20Ikan%20Patin.%20Ukuran%3A%20%E2%80%A6%20%2F%20Perkiraan%20jumlah%3A%20%E2%80%A6%20%2F%20Lokasi%3A%20%E2%80%A6"
+                target="_blank"
+                rel="noopener"
+              >
+                Tanya Harga<span class="sr-only"> Ikan Patin</span>
+              </a>
+            </li>
+            
+            <li class="product-row" data-kategori="pancing">
+              <div class="product-row__media">
+                
+                
+                <div
+                  class="photo-slot"
+                  style="width: 100%; height: 100%"
+                  aria-hidden="true"
+                ></div>
+                
+              </div>
+
+              <h3 class="product-row__name t-h3">Ikan Bawal</h3>
+
+              <p class="product-row__spec t-data">
+                <span class="sr-only">Ukuran: </span>300–600 gram/ekor
+              </p>
+
+              
+              <p
+                class="product-row__status status status--tersedia t-caption"
+              >
+                <span class="sr-only">Ketersediaan: </span>Tersedia
+              </p>
+              
+
+              <p class="product-row__use t-caption">Kolam pemancingan dan menu goreng.</p>
+
+              
+
+              <a
+                class="product-row__cta btn-action btn-action--row btn-action--block md:w-auto t-button" data-press="lembut"
+                href="https://wa.me/6281234567890?text=Halo%20Balong%20Ceuyah%2C%20saya%20ingin%20menanyakan%20stok%20dan%20harga%20Ikan%20Bawal.%20Ukuran%3A%20%E2%80%A6%20%2F%20Perkiraan%20jumlah%3A%20%E2%80%A6%20%2F%20Lokasi%3A%20%E2%80%A6"
+                target="_blank"
+                rel="noopener"
+              >
+                Tanya Harga<span class="sr-only"> Ikan Bawal</span>
+              </a>
+            </li>
+            
+            <li class="product-row" data-kategori="konsumsi">
+              <div class="product-row__media">
+                
+                
+                <div
+                  class="photo-slot"
+                  style="width: 100%; height: 100%"
+                  aria-hidden="true"
+                ></div>
+                
+              </div>
+
+              <h3 class="product-row__name t-h3">Ikan Mujair</h3>
+
+              <p class="product-row__spec t-data">
+                <span class="sr-only">Ukuran: </span>250–500 gram/ekor
+              </p>
+
+              
+              <p
+                class="product-row__status status status--terbatas t-caption"
+              >
+                <span class="sr-only">Ketersediaan: </span>Stok terbatas
+              </p>
+              
+
+              <p class="product-row__use t-caption">Kebutuhan pedagang ikan segar.</p>
+
+              
+
+              <a
+                class="product-row__cta btn-action btn-action--row btn-action--block md:w-auto t-button" data-press="lembut"
+                href="https://wa.me/6281234567890?text=Halo%20Balong%20Ceuyah%2C%20saya%20ingin%20menanyakan%20stok%20dan%20harga%20Ikan%20Mujair.%20Ukuran%3A%20%E2%80%A6%20%2F%20Perkiraan%20jumlah%3A%20%E2%80%A6%20%2F%20Lokasi%3A%20%E2%80%A6"
+                target="_blank"
+                rel="noopener"
+              >
+                Tanya Harga<span class="sr-only"> Ikan Mujair</span>
+              </a>
+            </li>
+            
+          </ul>
+
+          <!-- Kebijakan harga ditulis SEKALI, bukan diulang di setiap baris. -->
+          <p class="t-caption text-ink-muted mt-6">
+            Harga mengikuti ukuran dan jumlah — hubungi untuk harga hari ini.
+          </p>
+        </div>
+      </section>
+
+      <!-- ===== 4. Kesesuaian per Jenis Usaha ===== -->
+      <section
+        id="untuk-bisnis"
+        class="sec-sedang"
+        aria-labelledby="untuk-bisnis-title"
+      >
+        <div class="container-std">
+          <header class="section-head">
+            <span class="section-head__label t-label">Untuk Bisnis</span>
+            <h2 id="untuk-bisnis-title" class="section-head__title t-h2">
+              Kebutuhan Tiap Usaha Berbeda
+            </h2>
+            <p class="section-head__intro t-body measure">
+              Ukuran, kondisi ikan saat dikirim, dan pola pengiriman
+              menyesuaikan cara tiap usaha bekerja.
+            </p>
+          </header>
+
+          <div class="biz-list">
+            
+            <article class="biz-block">
+              <div class="biz-block__media">
+                
+                <img
+                  src="assets/img/web/man-fishing-holds-angling-rod-jpg-tiny-web.webp"
+                  alt="Pengiriman ikan untuk Kolam Pemancingan"
+                  width="900"
+                  height="600"
+                  loading="lazy"
+                  decoding="async"
+                />
+                
+                
+              </div>
+
+              <div class="biz-block__body">
+                <h3 class="t-h3">Kolam Pemancingan</h3>
+                <p class="biz-block__konteks t-body measure">Pengisian kolam menjelang akhir pekan dan saat lomba.</p>
+
+                <dl class="biz-block__data">
+                  <div class="data-row">
+                    <dt class="data-row__label t-label">
+                      Ukuran yang biasa diambil
+                    </dt>
+                    <dd class="data-row__value t-data">300–800 gram/ekor, disortir seragam</dd>
+                  </div>
+                  <div class="data-row">
+                    <dt class="data-row__label t-label">Kondisi ikan</dt>
+                    <dd class="data-row__value t-data">Hidup sampai lokasi</dd>
+                  </div>
+                  <div class="data-row">
+                    <dt class="data-row__label t-label">Pola pengiriman</dt>
+                    <dd class="data-row__value t-data">Dikonfirmasi H-2, dikirim pagi</dd>
+                  </div>
+                </dl>
+              </div>
+            </article>
+            
+            <article class="biz-block">
+              <div class="biz-block__media">
+                
+                <img
+                  src="assets/img/web/ikan-potong-segar-2-web.webp"
+                  alt="Pengiriman ikan untuk Toko Ikan Segar"
+                  width="900"
+                  height="600"
+                  loading="lazy"
+                  decoding="async"
+                />
+                
+                
+              </div>
+
+              <div class="biz-block__body">
+                <h3 class="t-h3">Toko Ikan Segar</h3>
+                <p class="biz-block__konteks t-body measure">Pasokan untuk dijual kembali dengan harga grosir.</p>
+
+                <dl class="biz-block__data">
+                  <div class="data-row">
+                    <dt class="data-row__label t-label">
+                      Ukuran yang biasa diambil
+                    </dt>
+                    <dd class="data-row__value t-data">Campuran sesuai permintaan pembeli toko</dd>
+                  </div>
+                  <div class="data-row">
+                    <dt class="data-row__label t-label">Kondisi ikan</dt>
+                    <dd class="data-row__value t-data">Hidup atau segar berpendingin</dd>
+                  </div>
+                  <div class="data-row">
+                    <dt class="data-row__label t-label">Pola pengiriman</dt>
+                    <dd class="data-row__value t-data">2–3 kali seminggu</dd>
+                  </div>
+                </dl>
+              </div>
+            </article>
+            
+            <article class="biz-block">
+              <div class="biz-block__media">
+                
+                <img
+                  src="assets/img/web/gurame-goreng-web.webp"
+                  alt="Pengiriman ikan untuk Restoran"
+                  width="900"
+                  height="600"
+                  loading="lazy"
+                  decoding="async"
+                />
+                
+                
+              </div>
+
+              <div class="biz-block__body">
+                <h3 class="t-h3">Restoran</h3>
+                <p class="biz-block__konteks t-body measure">Ukuran per porsi yang konsisten untuk dapur.</p>
+
+                <dl class="biz-block__data">
+                  <div class="data-row">
+                    <dt class="data-row__label t-label">
+                      Ukuran yang biasa diambil
+                    </dt>
+                    <dd class="data-row__value t-data">500–700 gram/ekor, toleransi sempit</dd>
+                  </div>
+                  <div class="data-row">
+                    <dt class="data-row__label t-label">Kondisi ikan</dt>
+                    <dd class="data-row__value t-data">Segar, dikirim sebelum dapur buka</dd>
+                  </div>
+                  <div class="data-row">
+                    <dt class="data-row__label t-label">Pola pengiriman</dt>
+                    <dd class="data-row__value t-data">Harian atau dua hari sekali</dd>
+                  </div>
+                </dl>
+              </div>
+            </article>
+            
+            <article class="biz-block">
+              <div class="biz-block__media">
+                
+                <img
+                  src="assets/img/web/nila-2-web.webp"
+                  alt="Pengiriman ikan untuk Kedai Kaki Lima"
+                  width="900"
+                  height="600"
+                  loading="lazy"
+                  decoding="async"
+                />
+                
+                
+              </div>
+
+              <div class="biz-block__body">
+                <h3 class="t-h3">Kedai Kaki Lima</h3>
+                <p class="biz-block__konteks t-body measure">Kebutuhan operasional harian dengan jumlah tetap.</p>
+
+                <dl class="biz-block__data">
+                  <div class="data-row">
+                    <dt class="data-row__label t-label">
+                      Ukuran yang biasa diambil
+                    </dt>
+                    <dd class="data-row__value t-data">8–10 ekor/kg untuk lele, 500 gram untuk nila</dd>
+                  </div>
+                  <div class="data-row">
+                    <dt class="data-row__label t-label">Kondisi ikan</dt>
+                    <dd class="data-row__value t-data">Hidup atau segar</dd>
+                  </div>
+                  <div class="data-row">
+                    <dt class="data-row__label t-label">Pola pengiriman</dt>
+                    <dd class="data-row__value t-data">Harian, pagi</dd>
+                  </div>
+                </dl>
+              </div>
+            </article>
+            
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 5. Ketentuan Supply ===== -->
+      <section
+        id="ketentuan-supply"
+        class="sec-rapat surface-cream"
+        aria-labelledby="ketentuan-supply-title"
+      >
+        <div class="container-std">
+          <header class="section-head">
+            <span class="section-head__label t-label">Ketentuan</span>
+            <h2 id="ketentuan-supply-title" class="section-head__title t-h2">
+              Area Pengiriman &amp; Ketentuan Pesanan
+            </h2>
+          </header>
+
+          <div class="supply-grid">
+            <!-- Tabel ketentuan. Ditulis lebih dulu di DOM karena di mobile
+               bagian inilah yang harus dibaca duluan (blueprint 3.1). -->
+            <div class="supply-table">
+              <h3 class="supply-block__title t-h3">Ketentuan pesanan</h3>
+              <dl>
+                <div class="data-row">
+                  <dt class="data-row__label t-label">Minimum order</dt>
+                  <dd class="data-row__value t-data">
+                    30 kg per pengiriman (dalam kota)<br />80 kg per pengiriman (luar kota)
+                  </dd>
+                </div>
+                <div class="data-row">
+                  <dt class="data-row__label t-label">Batas waktu pesan</dt>
+                  <dd class="data-row__value t-data">Pesan sebelum 16.00 untuk kirim besok pagi</dd>
+                </div>
+                <div class="data-row">
+                  <dt class="data-row__label t-label">Jadwal kirim</dt>
+                  <dd class="data-row__value t-data">Senin–Minggu, berangkat 05.00–08.00 WIB</dd>
+                </div>
+                
+                <div class="data-row">
+                  <dt class="data-row__label t-label">Ongkir</dt>
+                  <dd class="data-row__value t-data">Gratis untuk pesanan di atas 100 kg dalam kota; di bawah itu menyesuaikan jarak</dd>
+                </div>
+                
+                
+                <div class="data-row">
+                  <dt class="data-row__label t-label">Pembayaran</dt>
+                  <dd class="data-row__value t-data">
+                    Tunai saat terima atau transfer bank<!-- if:payment.waktu --><br />Dibayar saat barang diterima
+                  </dd>
+                </div>
+                <!-- /if -->
+                
+              </dl>
+            </div>
+
+            <!-- Daftar area -->
+            <div class="supply-areas">
+              <h3 class="supply-block__title t-h3">Area pengiriman</h3>
+              <ul class="area-list">
+                
+                <li>Kota Bandung</li>
+                
+                <li>Kabupaten Bandung</li>
+                
+                <li>Cimahi</li>
+                
+                <li>Bandung Barat</li>
+                
+                <li>Cileunyi</li>
+                
+                <li>Soreang</li>
+                
+                <li>Padalarang</li>
+                
+                <li>Jatinangor</li>
+                
+                <li>Tasikmalaya</li>
+                
+                <li>Garut</li>
+                
+                <li>Karawang</li>
+                
+              </ul>
+              <p class="area-note t-body measure">
+                Di luar daftar ini, silakan tanyakan dulu — sebagian masih bisa dijangkau dengan penyesuaian minimum order.
+              </p>
+              <p class="area-cta">
+                <a
+                  class="link-secondary t-body"
+                  href="https://wa.me/6281234567890?text=Halo%20Balong%20Ceuyah%2C%20apakah%20melayani%20pengiriman%20ke%20%5B%20lokasi%20saya%20%5D%3F%20Kebutuhan%20saya%3A%20%E2%80%A6"
+                  target="_blank"
+                  rel="noopener"
+                  >Cek Area Pengiriman</a
+                >
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 6. Penanganan & Konsistensi ===== -->
+      <section
+        id="penanganan"
+        class="sec-lapang surface-dark"
+        aria-labelledby="penanganan-title"
+      >
+        <div class="container-std">
+          <header class="section-head">
+            <span class="section-head__label t-label">Penanganan</span>
+            <h2 id="penanganan-title" class="section-head__title t-h2">
+              Bagaimana Kami Menjaga Ukuran dan Kondisi Ikan
+            </h2>
+            <p class="section-head__intro t-body measure">
+              Empat tahap yang dijalankan setiap kali pesanan disiapkan.
+            </p>
+          </header>
+        </div>
+
+        <!-- Rangkaian foto menembus tepi layar (full-bleed), di luar container. -->
+        <div class="tahap-strip">
+          
+          <figure class="tahap">
+            <div class="tahap__media">
+              
+              
+              <div
+                class="photo-slot"
+                style="width: 100%; height: 100%"
+                aria-hidden="true"
+              ></div>
+              
+            </div>
+            <figcaption class="tahap__caption">
+              <span class="tahap__num t-data">01</span>
+              <h3 class="tahap__judul t-h3">Sortir</h3>
+              <p class="tahap__kalimat t-caption">Ikan dipisahkan per ukuran sebelum dimuat, sehingga yang dikirim sesuai kesepakatan — bukan campuran sisa panen.</p>
+            </figcaption>
+          </figure>
+          
+          <figure class="tahap">
+            <div class="tahap__media">
+              
+              
+              <div
+                class="photo-slot"
+                style="width: 100%; height: 100%"
+                aria-hidden="true"
+              ></div>
+              
+            </div>
+            <figcaption class="tahap__caption">
+              <span class="tahap__num t-data">02</span>
+              <h3 class="tahap__judul t-h3">Timbang</h3>
+              <p class="tahap__kalimat t-caption">Penimbangan dilakukan setelah ikan ditiriskan, disaksikan bersama saat serah terima.</p>
+            </figcaption>
+          </figure>
+          
+          <figure class="tahap">
+            <div class="tahap__media">
+              
+              
+              <div
+                class="photo-slot"
+                style="width: 100%; height: 100%"
+                aria-hidden="true"
+              ></div>
+              
+            </div>
+            <figcaption class="tahap__caption">
+              <span class="tahap__num t-data">03</span>
+              <h3 class="tahap__judul t-h3">Muat</h3>
+              <p class="tahap__kalimat t-caption">Pengangkutan disiapkan sesuai peruntukan: ikan hidup untuk kolam pemancingan, ikan segar berpendingin untuk dapur.</p>
+            </figcaption>
+          </figure>
+          
+          <figure class="tahap">
+            <div class="tahap__media">
+              
+              
+              <div
+                class="photo-slot"
+                style="width: 100%; height: 100%"
+                aria-hidden="true"
+              ></div>
+              
+            </div>
+            <figcaption class="tahap__caption">
+              <span class="tahap__num t-data">04</span>
+              <h3 class="tahap__judul t-h3">Kirim</h3>
+              <p class="tahap__kalimat t-caption">Berangkat pagi agar sampai sebelum jam sibuk pelanggan, dengan rute yang dikelompokkan per area.</p>
+            </figcaption>
+          </figure>
+          
+        </div>
+      </section>
+
+      <!-- ===== 7. Cara Pesan ===== -->
+      <section
+        id="cara-pesan"
+        class="sec-lapang"
+        aria-labelledby="cara-pesan-title"
+      >
+        <div class="container-std">
+          <div class="col-narrow">
+            <header class="section-head">
+              <span class="section-head__label t-label">Alur Pemesanan</span>
+              <h2 id="cara-pesan-title" class="section-head__title t-h2">
+                Cara Pesan
+              </h2>
+            </header>
+
+            <ol class="langkah-list">
+              <li class="langkah">
+                <span class="langkah__num" aria-hidden="true">01</span>
+                <div>
+                  <h3 class="t-h3">Kirim kebutuhan</h3>
+                  <p class="langkah__kalimat t-body">
+                    Sebutkan jenis ikan, ukuran, perkiraan jumlah, lokasi, dan
+                    kapan dibutuhkan.
+                  </p>
+                </div>
+              </li>
+
+              <li class="langkah">
+                <span class="langkah__num" aria-hidden="true">02</span>
+                <div>
+                  <h3 class="t-h3">Kami balas stok &amp; harga</h3>
+                  <p class="langkah__kalimat t-body">
+                    Kami informasikan stok yang ada, ukuran tersedia, harga hari
+                    itu, dan minimum order.
+                  </p>
+                </div>
+              </li>
+
+              <li class="langkah">
+                <span class="langkah__num" aria-hidden="true">03</span>
+                <div>
+                  <h3 class="t-h3">Konfirmasi</h3>
+                  <p class="langkah__kalimat t-body">
+                    Anda konfirmasi jumlah akhir dan jadwal pengiriman.
+                  </p>
+                </div>
+              </li>
+
+              <li class="langkah">
+                <span class="langkah__num" aria-hidden="true">04</span>
+                <div>
+                  <h3 class="t-h3">Pengiriman</h3>
+                  <p class="langkah__kalimat t-body">
+                    Pesanan disiapkan dan dikirim ke lokasi usaha Anda.
+                    Dibayar saat barang diterima.
+                  </p>
+                </div>
+              </li>
+            </ol>
+
+            <div class="mt-8">
+              <a
+                class="btn-action t-button" data-press
+                href="https://wa.me/6281234567890?text=Halo%20Balong%20Ceuyah%2C%20saya%20pemilik%20%5B%20jenis%20usaha%20%5D%20di%20%5B%20lokasi%20%5D.%20Saya%20ingin%20menanyakan%20kemungkinan%20supply%20rutin.%20Jenis%20ikan%3A%20%E2%80%A6%20%2F%20Ukuran%3A%20%E2%80%A6%20%2F%20Perkiraan%20jumlah%20per%20pengiriman%3A%20%E2%80%A6"
+                target="_blank"
+                rel="noopener"
+              >
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                  focusable="false"
+                >
+                  <path
+                    d="M20.5 11.6a8.5 8.5 0 0 1-12.4 7.6L3.5 20.5l1.4-4.4A8.5 8.5 0 1 1 20.5 11.6Z"
+                  />
+                  <path
+                    d="M9 9.3c.4 1.5 1.6 2.9 3.1 3.6l.9-.9 2 .9v1.4c-.1.4-.5.6-.9.6-3-.3-5.4-2.7-5.7-5.7 0-.4.2-.8.6-.9h1.4l.9 2-.9.9"
+                  />
+                </svg>
+                Tanya Stok &amp; Harga
+              </a>
+              <p class="t-caption mt-3 text-ink-muted">
+                Cek stok tanpa komitmen — banyak yang menanyakan harga dulu
+                untuk perbandingan.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 8. Bukti & Identitas Bisnis ===== -->
+      <section id="tentang" class="sec-sedang" aria-labelledby="tentang-title">
+        <div class="container-std">
+          <header class="section-head">
+            <span class="section-head__label t-label">Identitas</span>
+            <h2 id="tentang-title" class="section-head__title t-h2">
+              Tentang Kami
+            </h2>
+            <p class="section-head__intro t-body measure">
+              Balong Ceuyah beroperasi di Jl. Contoh Raya No. 10, Cileunyi, Kabupaten Bandung, melayani
+              pengiriman ke Seluruh Jawa Barat.
+            </p>
+          </header>
+
+          <div class="bukti-grid">
+            <!-- Blok fakta -->
+            <div class="bukti-facts">
+              <dl>
+                <div class="data-row">
+                  <dt class="data-row__label t-label">Alamat</dt>
+                  <dd class="data-row__value t-data">
+                    Jl. Contoh Raya No. 10, Cileunyi, Kabupaten Bandung
+                  </dd>
+                </div>
+
+                <div class="data-row">
+                  <dt class="data-row__label t-label">Jam operasional</dt>
+                  <dd class="data-row__value t-data">Setiap hari, 05.00–20.00 WIB</dd>
+                </div>
+
+                
+
+                
+
+                
+              </dl>
+
+              <p class="t-label mt-6 text-ink-muted">WhatsApp</p>
+              <a
+                class="wa-number t-data-lg" data-press="warna"
+                href="https://wa.me/6281234567890?text=Halo%20Balong%20Ceuyah%2C%20saya%20ingin%20menanyakan%20stok%20dan%20harga%20ikan%20untuk%20kebutuhan%20usaha.%20Jenis%20ikan%3A%20%E2%80%A6%20%2F%20Ukuran%3A%20%E2%80%A6%20%2F%20Perkiraan%20jumlah%3A%20%E2%80%A6%20%2F%20Lokasi%3A%20%E2%80%A6%20%2F%20Dibutuhkan%20tanggal%3A%20%E2%80%A6"
+                target="_blank"
+                rel="noopener"
+                >0812-3456-7890</a
+              >
+            </div>
+
+            <!-- Foto: bukti, bukan pemandangan. Ukurannya lebih kecil dari
+               section lain. Di mobile hanya dua yang tampil. -->
+            <div class="bukti-photos">
+              <figure class="bukti-photo">
+                <div class="bukti-photo__media">
+                  
+                  
+                  <div
+                    class="photo-slot"
+                    style="width: 100%; height: 100%"
+                    aria-hidden="true"
+                  ></div>
+                  
+                </div>
+                <figcaption class="photo-caption t-caption">
+                  Penampungan di Jl. Contoh Raya No. 10, Cileunyi, Kabupaten Bandung
+                </figcaption>
+              </figure>
+
+              <figure class="bukti-photo">
+                <div class="bukti-photo__media">
+                  
+                  
+                  <div
+                    class="photo-slot"
+                    style="width: 100%; height: 100%"
+                    aria-hidden="true"
+                  ></div>
+                  
+                </div>
+                <figcaption class="photo-caption t-caption">
+                  Kendaraan pengiriman harian
+                </figcaption>
+              </figure>
+
+              <figure class="bukti-photo">
+                <div class="bukti-photo__media">
+                  
+                  
+                  <div
+                    class="photo-slot"
+                    style="width: 100%; height: 100%"
+                    aria-hidden="true"
+                  ></div>
+                  
+                </div>
+                <figcaption class="photo-caption t-caption">
+                  Yang menangani pesanan
+                </figcaption>
+              </figure>
+            </div>
+          </div>
+
+          <!-- Testimoni hanya dirender bila ada testimoni ASLI di data.
+             Bila kosong, seluruh blok ini hilang dan tata letak tetap utuh. -->
+          
+        </div>
+      </section>
+
+      <!-- ===== 9. FAQ ===== -->
+      <section id="faq" class="sec-sedang" aria-labelledby="faq-title">
+        <div class="container-mid">
+          <header class="section-head">
+            <span class="section-head__label t-label">FAQ</span>
+            <h2 id="faq-title" class="section-head__title t-h2">
+              Pertanyaan yang Sering Ditanyakan
+            </h2>
+          </header>
+
+          <div class="faq-list" id="faq-list">
+            <div class="faq-item" data-open="false">
+              <h3>
+                <button
+                  class="faq-q" data-press="warna"
+                  type="button"
+                  id="faq-btn-1"
+                  aria-expanded="false"
+                  aria-controls="faq-a-1"
+                >
+                  <span>Berapa minimum order?</span>
+                  <svg
+                    class="faq-sign"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    aria-hidden="true"
+                    focusable="false"
+                  >
+                    <path d="M5 12h14" />
+                    <path class="faq-sign__v" d="M12 5v14" />
+                  </svg>
+                </button>
+              </h3>
+              <div
+                class="faq-a"
+                id="faq-a-1"
+                role="region"
+                aria-labelledby="faq-btn-1"
+              >
+                <div class="faq-a__inner">
+                  <div class="t-body">
+                    <p>
+                      30 kg per pengiriman (dalam kota)
+                      Untuk luar kota, 80 kg per pengiriman (luar kota).
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="faq-item" data-open="false">
+              <h3>
+                <button
+                  class="faq-q" data-press="warna"
+                  type="button"
+                  id="faq-btn-2"
+                  aria-expanded="false"
+                  aria-controls="faq-a-2"
+                >
+                  <span>Ukuran ikan bisa dipilih?</span>
+                  <svg
+                    class="faq-sign"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    aria-hidden="true"
+                    focusable="false"
+                  >
+                    <path d="M5 12h14" />
+                    <path class="faq-sign__v" d="M12 5v14" />
+                  </svg>
+                </button>
+              </h3>
+              <div
+                class="faq-a"
+                id="faq-a-2"
+                role="region"
+                aria-labelledby="faq-btn-2"
+              >
+                <div class="faq-a__inner">
+                  <div class="t-body">
+                    <p>Ukuran dapat diminta dan akan kami sesuaikan dengan ketersediaan stok saat itu.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="faq-item" data-open="false">
+              <h3>
+                <button
+                  class="faq-q" data-press="warna"
+                  type="button"
+                  id="faq-btn-3"
+                  aria-expanded="false"
+                  aria-controls="faq-a-3"
+                >
+                  <span
+                    >Melayani pengiriman ke mana saja, dan bagaimana
+                    ongkirnya?</span
+                  >
+                  <svg
+                    class="faq-sign"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    aria-hidden="true"
+                    focusable="false"
+                  >
+                    <path d="M5 12h14" />
+                    <path class="faq-sign__v" d="M12 5v14" />
+                  </svg>
+                </button>
+              </h3>
+              <div
+                class="faq-a"
+                id="faq-a-3"
+                role="region"
+                aria-labelledby="faq-btn-3"
+              >
+                <div class="faq-a__inner">
+                  <div class="t-body">
+                    <p>
+                      Kami mengirim ke Seluruh Jawa Barat.
+                      Di luar daftar ini, silakan tanyakan dulu — sebagian masih bisa dijangkau dengan penyesuaian minimum order.
+                    </p>
+                    
+                    <p>Ongkir: Gratis untuk pesanan di atas 100 kg dalam kota; di bawah itu menyesuaikan jarak.</p>
+                    
+                    <p>Bisa diambil sendiri di lokasi pada jam operasional.</p>
+                    
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="faq-item" data-open="false">
+              <h3>
+                <button
+                  class="faq-q" data-press="warna"
+                  type="button"
+                  id="faq-btn-4"
+                  aria-expanded="false"
+                  aria-controls="faq-a-4"
+                >
+                  <span>Kapan batas waktu pesan untuk kirim besok?</span>
+                  <svg
+                    class="faq-sign"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    aria-hidden="true"
+                    focusable="false"
+                  >
+                    <path d="M5 12h14" />
+                    <path class="faq-sign__v" d="M12 5v14" />
+                  </svg>
+                </button>
+              </h3>
+              <div
+                class="faq-a"
+                id="faq-a-4"
+                role="region"
+                aria-labelledby="faq-btn-4"
+              >
+                <div class="faq-a__inner">
+                  <div class="t-body">
+                    <p>
+                      Pesan sebelum 16.00 untuk kirim besok pagi. Jadwal berangkat:
+                      Senin–Minggu, berangkat 05.00–08.00 WIB.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="faq-item" data-open="false">
+              <h3>
+                <button
+                  class="faq-q" data-press="warna"
+                  type="button"
+                  id="faq-btn-5"
+                  aria-expanded="false"
+                  aria-controls="faq-a-5"
+                >
+                  <span>Bagaimana cara dan waktu pembayaran?</span>
+                  <svg
+                    class="faq-sign"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    aria-hidden="true"
+                    focusable="false"
+                  >
+                    <path d="M5 12h14" />
+                    <path class="faq-sign__v" d="M12 5v14" />
+                  </svg>
+                </button>
+              </h3>
+              <div
+                class="faq-a"
+                id="faq-a-5"
+                role="region"
+                aria-labelledby="faq-btn-5"
+              >
+                <div class="faq-a__inner">
+                  <div class="t-body">
+                    
+                    <p>
+                      Tunai saat terima atau transfer bank.<!-- if:payment.waktu -->
+                      Dibayar saat barang diterima.
+                    </p>
+                    <!-- /if -->
+                    <p>Nota diberikan setiap pengiriman.</p>
+                    
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="faq-item" data-open="false">
+              <h3>
+                <button
+                  class="faq-q" data-press="warna"
+                  type="button"
+                  id="faq-btn-6"
+                  aria-expanded="false"
+                  aria-controls="faq-a-6"
+                >
+                  <span>Bagaimana kalau ada ikan mati saat sampai?</span>
+                  <svg
+                    class="faq-sign"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    aria-hidden="true"
+                    focusable="false"
+                  >
+                    <path d="M5 12h14" />
+                    <path class="faq-sign__v" d="M12 5v14" />
+                  </svg>
+                </button>
+              </h3>
+              <div
+                class="faq-a"
+                id="faq-a-6"
+                role="region"
+                aria-labelledby="faq-btn-6"
+              >
+                <div class="faq-a__inner">
+                  <div class="t-body">
+                    <p>Ikan yang mati saat serah terima diganti atau dipotong dari tagihan, dihitung bersama di lokasi sebelum kendaraan meninggalkan tempat.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="faq-item" data-open="false">
+              <h3>
+                <button
+                  class="faq-q" data-press="warna"
+                  type="button"
+                  id="faq-btn-7"
+                  aria-expanded="false"
+                  aria-controls="faq-a-7"
+                >
+                  <span>Bagaimana kalau ukuran tidak sesuai kesepakatan?</span>
+                  <svg
+                    class="faq-sign"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    aria-hidden="true"
+                    focusable="false"
+                  >
+                    <path d="M5 12h14" />
+                    <path class="faq-sign__v" d="M12 5v14" />
+                  </svg>
+                </button>
+              </h3>
+              <div
+                class="faq-a"
+                id="faq-a-7"
+                role="region"
+                aria-labelledby="faq-btn-7"
+              >
+                <div class="faq-a__inner">
+                  <div class="t-body">
+                    <p>Bila ukuran meleset dari kesepakatan, pesanan boleh ditolak saat serah terima tanpa biaya, atau disesuaikan pada pengiriman berikutnya.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="faq-item" data-open="false">
+              <h3>
+                <button
+                  class="faq-q" data-press="warna"
+                  type="button"
+                  id="faq-btn-8"
+                  aria-expanded="false"
+                  aria-controls="faq-a-8"
+                >
+                  <span
+                    >Bisa pesan dalam jumlah besar atau rutin? Berapa lama
+                    sebelumnya harus dikonfirmasi?</span
+                  >
+                  <svg
+                    class="faq-sign"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    aria-hidden="true"
+                    focusable="false"
+                  >
+                    <path d="M5 12h14" />
+                    <path class="faq-sign__v" d="M12 5v14" />
+                  </svg>
+                </button>
+              </h3>
+              <div
+                class="faq-a"
+                id="faq-a-8"
+                role="region"
+                aria-labelledby="faq-btn-8"
+              >
+                <div class="faq-a__inner">
+                  <div class="t-body">
+                    <p>H-2 untuk pesanan di atas 200 kg.</p>
+                    <p>Pesanan rutin dijadwalkan di awal dan dikonfirmasi ulang sehari sebelum pengiriman.</p>
+                    
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <p class="t-body mt-6">
+            Pertanyaan lain?
+            <a
+              class="link-secondary t-body"
+              href="https://wa.me/6281234567890?text=Halo%20Balong%20Ceuyah%2C%20saya%20ingin%20menanyakan%20stok%20dan%20harga%20ikan%20untuk%20kebutuhan%20usaha.%20Jenis%20ikan%3A%20%E2%80%A6%20%2F%20Ukuran%3A%20%E2%80%A6%20%2F%20Perkiraan%20jumlah%3A%20%E2%80%A6%20%2F%20Lokasi%3A%20%E2%80%A6%20%2F%20Dibutuhkan%20tanggal%3A%20%E2%80%A6"
+              target="_blank"
+              rel="noopener"
+              >Tanyakan langsung</a
+            >
+          </p>
+        </div>
+      </section>
+
+      <!-- ===== 10. CTA Penutup ===== -->
+      <section
+        id="cta-penutup"
+        class="sec-lapang surface-dark"
+        aria-labelledby="cta-title"
+      >
+        <div class="container-std">
+          <div class="col-cta">
+            <h2 id="cta-title" class="t-h2">
+              Butuh Pasokan Ikan Rutin untuk Usaha Anda?
+            </h2>
+
+            <p class="t-lead mt-5">
+              Sebutkan jenis ikan, ukuran, perkiraan jumlah, lokasi, dan kapan
+              dibutuhkan — kami balas dengan stok, harga, dan jadwal kirim yang
+              tersedia.
+            </p>
+
+            <div class="mt-8">
+              <a
+                class="btn-action t-button" data-press
+                href="https://wa.me/6281234567890?text=Halo%20Balong%20Ceuyah%2C%20saya%20pemilik%20%5B%20jenis%20usaha%20%5D%20di%20%5B%20lokasi%20%5D.%20Saya%20ingin%20menanyakan%20kemungkinan%20supply%20rutin.%20Jenis%20ikan%3A%20%E2%80%A6%20%2F%20Ukuran%3A%20%E2%80%A6%20%2F%20Perkiraan%20jumlah%20per%20pengiriman%3A%20%E2%80%A6"
+                target="_blank"
+                rel="noopener"
+              >
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                  focusable="false"
+                >
+                  <path
+                    d="M20.5 11.6a8.5 8.5 0 0 1-12.4 7.6L3.5 20.5l1.4-4.4A8.5 8.5 0 1 1 20.5 11.6Z"
+                  />
+                  <path
+                    d="M9 9.3c.4 1.5 1.6 2.9 3.1 3.6l.9-.9 2 .9v1.4c-.1.4-.5.6-.9.6-3-.3-5.4-2.7-5.7-5.7 0-.4.2-.8.6-.9h1.4l.9 2-.9.9"
+                  />
+                </svg>
+                Tanya Stok &amp; Harga via WhatsApp
+              </a>
+            </div>
+
+            <!-- Hal yang sebaiknya disebutkan saat bertanya. -->
+            <ul class="cta-daftar t-label mt-8">
+              <li>Jenis ikan</li>
+              <li>Ukuran</li>
+              <li>Perkiraan jumlah</li>
+              <li>Lokasi</li>
+              <li>Tanggal dibutuhkan</li>
+            </ul>
+
+            <p class="cta-kontak t-data mt-6">
+              0812-3456-7890 &middot; Setiap hari, 05.00–20.00 WIB
+            </p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- ===== 11. Footer ===== -->
+    <footer class="site-footer surface-ink">
+      <div class="container-std">
+        <div class="footer-grid">
+          <div class="footer-col">
+            <h2 class="t-label">Balong Ceuyah</h2>
+            <p class="t-caption">Supplier ikan untuk kolam pemancingan, toko ikan segar, restoran, dan rumah makan.</p>
+          </div>
+
+          <div class="footer-col">
+            <h2 class="t-label">Kontak</h2>
+            <ul class="t-caption">
+              <li>
+                <a href="https://wa.me/6281234567890?text=Halo%20Balong%20Ceuyah%2C%20saya%20ingin%20menanyakan%20stok%20dan%20harga%20ikan%20untuk%20kebutuhan%20usaha.%20Jenis%20ikan%3A%20%E2%80%A6%20%2F%20Ukuran%3A%20%E2%80%A6%20%2F%20Perkiraan%20jumlah%3A%20%E2%80%A6%20%2F%20Lokasi%3A%20%E2%80%A6%20%2F%20Dibutuhkan%20tanggal%3A%20%E2%80%A6" target="_blank" rel="noopener"
+                  >WhatsApp 0812-3456-7890</a
+                >
+              </li>
+              <li>Jl. Contoh Raya No. 10, Cileunyi, Kabupaten Bandung</li>
+              
+              <li>Setiap hari, 05.00–20.00 WIB</li>
+            </ul>
+          </div>
+
+          <div class="footer-col">
+            <h2 class="t-label">Area pengiriman</h2>
+            <ul class="t-caption">
+              <li>Seluruh Jawa Barat</li>
+              <li><a href="#ketentuan-supply">Lihat daftar area lengkap</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-col">
+            <h2 class="t-label">Halaman</h2>
+            <ul class="t-caption">
+              <li><a href="#jenis-ikan">Jenis Ikan</a></li>
+              <li><a href="#ketentuan-supply">Ketentuan Supply</a></li>
+              <li><a href="#cara-pesan">Cara Pesan</a></li>
+              <li><a href="#faq">FAQ</a></li>
+              
+            </ul>
+          </div>
+        </div>
+
+        <p class="footer-copyright">
+          &copy; 2026 Balong Ceuyah. Seluruh hak
+          dilindungi.
+        </p>
+      </div>
+    </footer>
+    <div class="footer-spacer" aria-hidden="true"></div>
+
+    <!-- ===== 12. Sticky WhatsApp (mobile) ===== -->
+    <div class="sticky-cta" id="sticky-cta" data-show="false">
+      <a
+        class="btn-action btn-action--block t-button" data-press="lembut"
+        href="https://wa.me/6281234567890?text=Halo%20Balong%20Ceuyah%2C%20saya%20ingin%20menanyakan%20stok%20dan%20harga%20ikan%20untuk%20kebutuhan%20usaha.%20Jenis%20ikan%3A%20%E2%80%A6%20%2F%20Ukuran%3A%20%E2%80%A6%20%2F%20Perkiraan%20jumlah%3A%20%E2%80%A6%20%2F%20Lokasi%3A%20%E2%80%A6%20%2F%20Dibutuhkan%20tanggal%3A%20%E2%80%A6"
+        target="_blank"
+        rel="noopener"
+      >
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+          focusable="false"
+        >
+          <path
+            d="M20.5 11.6a8.5 8.5 0 0 1-12.4 7.6L3.5 20.5l1.4-4.4A8.5 8.5 0 1 1 20.5 11.6Z"
+          />
+          <path
+            d="M9 9.3c.4 1.5 1.6 2.9 3.1 3.6l.9-.9 2 .9v1.4c-.1.4-.5.6-.9.6-3-.3-5.4-2.7-5.7-5.7 0-.4.2-.8.6-.9h1.4l.9 2-.9.9"
+          />
+        </svg>
+        Tanya Stok &amp; Harga
+      </a>
+    </div>
+
+    <!-- motion.js lebih dulu: main.js memakai window.Motion.
+       defer menjamin urutannya tanpa memblokir render. -->
+    <script src="assets/motion.js" defer></script>
+    <script src="assets/main.js" defer></script>
+  </body>
+</html>
