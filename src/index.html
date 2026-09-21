@@ -1,0 +1,1478 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>
+      {{business.nama}} — Supplier Ikan untuk Kolam Pemancingan, Toko Ikan,
+      Restoran &amp; Rumah Makan
+    </title>
+    <meta
+      name="description"
+      content="{{business.deskripsi}} Melayani pengiriman ke area layanan dengan harga grosir."
+    />
+
+    <!-- Font di-self-host (blueprint 1.9). Berkas terpisah agar path url() tidak diproses ulang saat build CSS. -->
+    <link
+      rel="preload"
+      href="assets/fonts/fraunces-latin-var.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="assets/fonts/oswald-latin-var.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link rel="stylesheet" href="assets/fonts/fonts.css" />
+    <link rel="stylesheet" href="assets/styles.css" />
+  </head>
+
+  <body>
+    <a class="skip-link t-body" href="#konten">Lewati ke konten utama</a>
+
+    <!-- ===== Banner staging =====
+       Bukan bagian dari blueprint dan bukan section konten.
+       Muncul selama data/business.json masih berstatus CONTOH,
+       hilang otomatis saat _meta.dataStatus diubah menjadi "ASLI". -->
+    <!-- if:_computed.isStaging -->
+    <div class="staging-banner t-label" role="note">
+      DATA CONTOH — belum boleh dipublikasikan.
+    </div>
+    <!-- /if -->
+
+    <!-- ===== 1. Navbar ===== -->
+    <header class="site-header">
+      <div class="container-std">
+        <div class="site-header__bar">
+          <!-- Wordmark tipografis. Tidak ada logo ikan generik (blueprint 7.1). -->
+          <a class="wordmark" href="#konten">
+            <span class="wordmark__name">{{business.nama}}</span>
+            <span class="wordmark__desc t-label hidden lg:block"
+              >{{business.deskriptor}}</span
+            >
+          </a>
+
+          <!-- Navigasi desktop: empat tautan, tidak lebih. -->
+          <nav class="hidden lg:block" aria-label="Navigasi utama">
+            <ul class="flex items-center gap-7">
+              <li><a class="nav-link" data-press="warna" href="#jenis-ikan">Jenis Ikan</a></li>
+              <li>
+                <a class="nav-link" data-press="warna" href="#ketentuan-supply"
+                  >Ketentuan Supply</a
+                >
+              </li>
+              <li><a class="nav-link" data-press="warna" href="#cara-pesan">Cara Pesan</a></li>
+              <li><a class="nav-link" data-press="warna" href="#faq">FAQ</a></li>
+            </ul>
+          </nav>
+
+          <div class="flex items-center gap-2">
+            <!-- Tombol aksi tampil mulai tablet; di mobile digantikan bar sticky. -->
+            <a
+              class="btn-action btn-action--nav t-button hidden md:inline-flex" data-press
+              href="{{wa:umum}}"
+              target="_blank"
+              rel="noopener"
+            >
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+                focusable="false"
+              >
+                <path
+                  d="M20.5 11.6a8.5 8.5 0 0 1-12.4 7.6L3.5 20.5l1.4-4.4A8.5 8.5 0 1 1 20.5 11.6Z"
+                />
+                <path
+                  d="M9 9.3c.4 1.5 1.6 2.9 3.1 3.6l.9-.9 2 .9v1.4c-.1.4-.5.6-.9.6-3-.3-5.4-2.7-5.7-5.7 0-.4.2-.8.6-.9h1.4l.9 2-.9.9"
+                />
+              </svg>
+              Tanya Stok &amp; Harga
+            </a>
+
+            <button
+              class="nav-toggle lg:hidden" data-press
+              id="nav-toggle"
+              type="button"
+              aria-expanded="false"
+              aria-controls="nav-panel"
+              aria-label="Buka menu navigasi"
+            >
+              <svg
+                id="icon-menu"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                aria-hidden="true"
+                focusable="false"
+              >
+                <path d="M4 7h16M4 12h16M4 17h16" />
+              </svg>
+              <svg
+                id="icon-close"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                aria-hidden="true"
+                focusable="false"
+                hidden
+              >
+                <path d="M6 6l12 12M18 6L6 18" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sheet menu mobile & tablet.
+         Menggantung dari navbar, bukan mengambil alih layar: ia muncul dari
+         tempat tombolnya berada dan pergi ke arah yang sama. Bisa ditarik
+         ke atas dengan jari untuk ditutup (lihat main.js). -->
+      <div class="nav-sheet" id="nav-panel" hidden>
+        <div class="container-std">
+          <nav aria-label="Navigasi utama (mobile)">
+            <ul>
+              <li>
+                <a class="nav-sheet__link" data-press="warna" href="#jenis-ikan">Jenis Ikan</a>
+              </li>
+              <li>
+                <a class="nav-sheet__link" data-press="warna" href="#ketentuan-supply"
+                  >Ketentuan Supply</a
+                >
+              </li>
+              <li>
+                <a class="nav-sheet__link" data-press="warna" href="#cara-pesan">Cara Pesan</a>
+              </li>
+              <li><a class="nav-sheet__link" data-press="warna" href="#faq">FAQ</a></li>
+            </ul>
+          </nav>
+          <a
+            class="btn-action btn-action--block t-button mt-6 md:hidden" data-press="lembut"
+            href="{{wa:umum}}"
+            target="_blank"
+            rel="noopener"
+          >
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <path
+                d="M20.5 11.6a8.5 8.5 0 0 1-12.4 7.6L3.5 20.5l1.4-4.4A8.5 8.5 0 1 1 20.5 11.6Z"
+              />
+              <path
+                d="M9 9.3c.4 1.5 1.6 2.9 3.1 3.6l.9-.9 2 .9v1.4c-.1.4-.5.6-.9.6-3-.3-5.4-2.7-5.7-5.7 0-.4.2-.8.6-.9h1.4l.9 2-.9.9"
+              />
+            </svg>
+            Tanya Stok &amp; Harga
+          </a>
+        </div>
+
+        <!-- Pegangan di bibir bawah sheet. Bentuknya sendiri yang memberi
+           tahu bahwa benda ini bisa ditarik, tanpa perlu tulisan. -->
+        <div class="nav-sheet__handle" aria-hidden="true"></div>
+      </div>
+    </header>
+
+    <!-- Kelambu peredup. Menu adalah tugas yang memblokir, jadi halaman di
+       belakangnya diredupkan; chrome navbar sendiri TIDAK diredupkan karena
+       ia bagian dari tugas itu. Opasitasnya mengikuti posisi sheet secara
+       terus-menerus, bukan menyala sekaligus di akhir. -->
+    <div class="nav-scrim" id="nav-scrim" hidden></div>
+
+    <main id="konten">
+      <!-- ===== 2. Hero ===== -->
+      <section class="hero" aria-labelledby="hero-title">
+        <!-- Foto full-bleed. Selama foto asli belum ada, yang tampil adalah
+           slot kosong berdimensi final - bukan gambar pengganti. -->
+        <div class="hero__media">
+          <!-- if:photography.heroImage -->
+          <img
+            src="{{photography.heroImage}}"
+            alt="{{photography.heroAlt}}"
+            width="1600"
+            height="1067"
+            fetchpriority="high"
+            decoding="async"
+          />
+          <!-- /if -->
+          <!-- ifnot:photography.heroImage -->
+          <div class="photo-slot h-full" aria-hidden="true"></div>
+          <!-- /ifnot -->
+        </div>
+
+        <div class="container-std">
+          <div class="lg:grid lg:grid-cols-12">
+            <div class="hero__panel lg:col-span-7">
+              <h1 id="hero-title" class="t-h1">
+                Stok ikan aman, bisnismu juga aman.
+              </h1>
+
+              <p class="t-lead measure mt-5 text-ink-muted">
+                Pasokan rutin untuk kolam pemancingan, toko ikan, restoran, dan
+                rumah makan.
+              </p>
+
+              <!-- Strip fakta operasional. Butir yang datanya belum ada tidak dirender. -->
+              <dl class="hero__strip mt-6">
+                <div>
+                  <dt class="t-label">Area pengiriman</dt>
+                  <dd class="t-data">{{delivery.areaRingkas}}</dd>
+                </div>
+                <div>
+                  <dt class="t-label">Minimum order</dt>
+                  <dd class="t-data">{{supply.minimumOrderRingkas}}</dd>
+                </div>
+                <div>
+                  <dt class="t-label">Jam operasional</dt>
+                  <dd class="t-data">{{contact.jamLayanan}}</dd>
+                </div>
+                <!-- if:supply.kapasitas -->
+                <div>
+                  <dt class="t-label">Kapasitas supply</dt>
+                  <dd class="t-data">{{supply.kapasitas}}</dd>
+                </div>
+                <!-- /if -->
+              </dl>
+
+              <div
+                class="mt-6 flex flex-col gap-3 lg:flex-row lg:items-center lg:gap-6"
+              >
+                <a
+                  class="btn-action t-button" data-press
+                  href="{{wa:umum}}"
+                  target="_blank"
+                  rel="noopener"
+                >
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                    focusable="false"
+                  >
+                    <path
+                      d="M20.5 11.6a8.5 8.5 0 0 1-12.4 7.6L3.5 20.5l1.4-4.4A8.5 8.5 0 1 1 20.5 11.6Z"
+                    />
+                    <path
+                      d="M9 9.3c.4 1.5 1.6 2.9 3.1 3.6l.9-.9 2 .9v1.4c-.1.4-.5.6-.9.6-3-.3-5.4-2.7-5.7-5.7 0-.4.2-.8.6-.9h1.4l.9 2-.9.9"
+                    />
+                  </svg>
+                  Tanya Stok &amp; Harga
+                </a>
+                <a class="link-secondary t-body" href="#jenis-ikan"
+                  >Lihat Jenis Ikan</a
+                >
+              </div>
+
+              <p class="t-caption mt-3 text-ink-muted">
+                Cek stok tanpa komitmen.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 3. Jenis Ikan & Ukuran ===== -->
+      <section
+        id="jenis-ikan"
+        class="sec-rapat"
+        aria-labelledby="jenis-ikan-title"
+      >
+        <div class="container-std">
+          <header class="section-head">
+            <span class="section-head__label t-label">Produk</span>
+            <h2 id="jenis-ikan-title" class="section-head__title t-h2">
+              Jenis Ikan &amp; Ukuran
+            </h2>
+            <p class="section-head__intro t-body measure">
+              Ukuran ditulis dalam satuan yang biasa dipakai pembeli.
+              Ketersediaan mengikuti hasil panen.
+            </p>
+          </header>
+
+          <!-- Filter hanya diadakan bila jenis ikan >= 8 (blueprint 7.3). -->
+          <!-- if:_computed.showFilter -->
+          <div
+            class="text-tabs mb-6"
+            id="product-filter"
+            role="group"
+            aria-label="Filter jenis ikan"
+          >
+            <button
+              class="tab" data-press
+              type="button"
+              data-filter="semua"
+              aria-pressed="true"
+            >
+              Semua
+            </button>
+            <button
+              class="tab" data-press
+              type="button"
+              data-filter="konsumsi"
+              aria-pressed="false"
+            >
+              Ikan konsumsi
+            </button>
+            <button
+              class="tab" data-press
+              type="button"
+              data-filter="pancing"
+              aria-pressed="false"
+            >
+              Ikan kolam pancing
+            </button>
+          </div>
+          <!-- /if -->
+
+          <!-- Judul kolom desktop. Dekoratif bagi pembaca layar: setiap nilai
+             di dalam baris sudah membawa labelnya sendiri. -->
+          <div class="product-head t-label" aria-hidden="true">
+            <span></span>
+            <span>Ikan</span>
+            <span>Ukuran</span>
+            <span>Ketersediaan</span>
+            <span></span>
+          </div>
+
+          <ul class="product-list" id="product-list">
+            <!-- repeat:products -->
+            <li class="product-row" data-kategori="{{.kategori}}">
+              <div class="product-row__media">
+                <!-- if:.foto -->
+                <img
+                  src="{{.foto}}"
+                  alt="{{.nama}} siap kirim"
+                  width="400"
+                  height="400"
+                  loading="lazy"
+                  decoding="async"
+                />
+                <!-- /if -->
+                <!-- ifnot:.foto -->
+                <div
+                  class="photo-slot"
+                  style="width: 100%; height: 100%"
+                  aria-hidden="true"
+                ></div>
+                <!-- /ifnot -->
+              </div>
+
+              <h3 class="product-row__name t-h3">{{.nama}}</h3>
+
+              <p class="product-row__spec t-data">
+                <span class="sr-only">Ukuran: </span>{{.ukuran}}
+              </p>
+
+              <!-- if:.statusLabel -->
+              <p
+                class="product-row__status status status--{{.status}} t-caption"
+              >
+                <span class="sr-only">Ketersediaan: </span>{{.statusLabel}}
+              </p>
+              <!-- /if -->
+
+              <p class="product-row__use t-caption">{{.kegunaan}}</p>
+
+              <!-- if:.minimumOrder -->
+              <p class="product-row__min t-caption">
+                Minimum order {{.minimumOrder}}
+              </p>
+              <!-- /if -->
+
+              <a
+                class="product-row__cta btn-action btn-action--row btn-action--block md:w-auto t-button" data-press="lembut"
+                href="{{wa:produk}}"
+                target="_blank"
+                rel="noopener"
+              >
+                Tanya Harga<span class="sr-only"> {{.nama}}</span>
+              </a>
+            </li>
+            <!-- /repeat -->
+          </ul>
+
+          <!-- Kebijakan harga ditulis SEKALI, bukan diulang di setiap baris. -->
+          <p class="t-caption text-ink-muted mt-6">
+            Harga mengikuti ukuran dan jumlah — hubungi untuk harga hari ini.
+          </p>
+        </div>
+      </section>
+
+      <!-- ===== 4. Kesesuaian per Jenis Usaha ===== -->
+      <section
+        id="untuk-bisnis"
+        class="sec-sedang"
+        aria-labelledby="untuk-bisnis-title"
+      >
+        <div class="container-std">
+          <header class="section-head">
+            <span class="section-head__label t-label">Untuk Bisnis</span>
+            <h2 id="untuk-bisnis-title" class="section-head__title t-h2">
+              Kebutuhan Tiap Usaha Berbeda
+            </h2>
+            <p class="section-head__intro t-body measure">
+              Ukuran, kondisi ikan saat dikirim, dan pola pengiriman
+              menyesuaikan cara tiap usaha bekerja.
+            </p>
+          </header>
+
+          <div class="biz-list">
+            <!-- repeat:businessTypes -->
+            <article class="biz-block">
+              <div class="biz-block__media">
+                <!-- if:.foto -->
+                <img
+                  src="{{.foto}}"
+                  alt="Pengiriman ikan untuk {{.nama}}"
+                  width="900"
+                  height="600"
+                  loading="lazy"
+                  decoding="async"
+                />
+                <!-- /if -->
+                <!-- ifnot:.foto -->
+                <div
+                  class="photo-slot"
+                  style="width: 100%; height: 100%"
+                  aria-hidden="true"
+                ></div>
+                <!-- /ifnot -->
+              </div>
+
+              <div class="biz-block__body">
+                <h3 class="t-h3">{{.nama}}</h3>
+                <p class="biz-block__konteks t-body measure">{{.konteks}}</p>
+
+                <dl class="biz-block__data">
+                  <div class="data-row">
+                    <dt class="data-row__label t-label">
+                      Ukuran yang biasa diambil
+                    </dt>
+                    <dd class="data-row__value t-data">{{.ukuranBiasa}}</dd>
+                  </div>
+                  <div class="data-row">
+                    <dt class="data-row__label t-label">Kondisi ikan</dt>
+                    <dd class="data-row__value t-data">{{.kondisiIkan}}</dd>
+                  </div>
+                  <div class="data-row">
+                    <dt class="data-row__label t-label">Pola pengiriman</dt>
+                    <dd class="data-row__value t-data">{{.polaKirim}}</dd>
+                  </div>
+                </dl>
+              </div>
+            </article>
+            <!-- /repeat -->
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 5. Ketentuan Supply ===== -->
+      <section
+        id="ketentuan-supply"
+        class="sec-rapat surface-cream"
+        aria-labelledby="ketentuan-supply-title"
+      >
+        <div class="container-std">
+          <header class="section-head">
+            <span class="section-head__label t-label">Ketentuan</span>
+            <h2 id="ketentuan-supply-title" class="section-head__title t-h2">
+              Area Pengiriman &amp; Ketentuan Pesanan
+            </h2>
+          </header>
+
+          <div class="supply-grid">
+            <!-- Tabel ketentuan. Ditulis lebih dulu di DOM karena di mobile
+               bagian inilah yang harus dibaca duluan (blueprint 3.1). -->
+            <div class="supply-table">
+              <h3 class="supply-block__title t-h3">Ketentuan pesanan</h3>
+              <dl>
+                <div class="data-row">
+                  <dt class="data-row__label t-label">Minimum order</dt>
+                  <dd class="data-row__value t-data">
+                    {{supply.minimumOrder}}<!-- if:supply.minimumOrderLuarKota --><br />{{supply.minimumOrderLuarKota}}<!-- /if -->
+                  </dd>
+                </div>
+                <div class="data-row">
+                  <dt class="data-row__label t-label">Batas waktu pesan</dt>
+                  <dd class="data-row__value t-data">{{supply.orderCutoff}}</dd>
+                </div>
+                <div class="data-row">
+                  <dt class="data-row__label t-label">Jadwal kirim</dt>
+                  <dd class="data-row__value t-data">{{delivery.jadwal}}</dd>
+                </div>
+                <!-- if:delivery.ongkir -->
+                <div class="data-row">
+                  <dt class="data-row__label t-label">Ongkir</dt>
+                  <dd class="data-row__value t-data">{{delivery.ongkir}}</dd>
+                </div>
+                <!-- /if -->
+                <!-- if:payment.metode -->
+                <div class="data-row">
+                  <dt class="data-row__label t-label">Pembayaran</dt>
+                  <dd class="data-row__value t-data">
+                    {{payment.metode}}<!-- if:payment.waktu --><br />{{payment.waktu}}<!-- /if -->
+                  </dd>
+                </div>
+                <!-- /if -->
+                <!-- if:supply.kapasitas -->
+                <div class="data-row">
+                  <dt class="data-row__label t-label">Kapasitas per hari</dt>
+                  <dd class="data-row__value t-data">{{supply.kapasitas}}</dd>
+                </div>
+                <!-- /if -->
+              </dl>
+            </div>
+
+            <!-- Daftar area -->
+            <div class="supply-areas">
+              <h3 class="supply-block__title t-h3">Area pengiriman</h3>
+              <ul class="area-list">
+                <!-- repeat:delivery.areas -->
+                <li>{{.}}</li>
+                <!-- /repeat -->
+              </ul>
+              <p class="area-note t-body measure">
+                {{delivery.kebijakanLuarArea}}
+              </p>
+              <p class="area-cta">
+                <a
+                  class="link-secondary t-body"
+                  href="{{wa:area}}"
+                  target="_blank"
+                  rel="noopener"
+                  >Cek Area Pengiriman</a
+                >
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 6. Penanganan & Konsistensi ===== -->
+      <section
+        id="penanganan"
+        class="sec-lapang surface-dark"
+        aria-labelledby="penanganan-title"
+      >
+        <div class="container-std">
+          <header class="section-head">
+            <span class="section-head__label t-label">Penanganan</span>
+            <h2 id="penanganan-title" class="section-head__title t-h2">
+              Bagaimana Kami Menjaga Ukuran dan Kondisi Ikan
+            </h2>
+            <p class="section-head__intro t-body measure">
+              Empat tahap yang dijalankan setiap kali pesanan disiapkan.
+            </p>
+          </header>
+        </div>
+
+        <!-- Rangkaian foto menembus tepi layar (full-bleed), di luar container. -->
+        <div class="tahap-strip">
+          <!-- repeat:handling -->
+          <figure class="tahap">
+            <div class="tahap__media">
+              <!-- if:.foto -->
+              <img
+                src="{{.foto}}"
+                alt="Tahap {{.tahap}}: {{.judul}}"
+                width="800"
+                height="1000"
+                loading="lazy"
+                decoding="async"
+              />
+              <!-- /if -->
+              <!-- ifnot:.foto -->
+              <div
+                class="photo-slot"
+                style="width: 100%; height: 100%"
+                aria-hidden="true"
+              ></div>
+              <!-- /ifnot -->
+            </div>
+            <figcaption class="tahap__caption">
+              <span class="tahap__num t-data">{{.tahap}}</span>
+              <h3 class="tahap__judul t-h3">{{.judul}}</h3>
+              <p class="tahap__kalimat t-caption">{{.kalimat}}</p>
+            </figcaption>
+          </figure>
+          <!-- /repeat -->
+        </div>
+      </section>
+
+      <!-- ===== 7. Cara Pesan ===== -->
+      <section
+        id="cara-pesan"
+        class="sec-lapang"
+        aria-labelledby="cara-pesan-title"
+      >
+        <div class="container-std">
+          <div class="col-narrow">
+            <header class="section-head">
+              <span class="section-head__label t-label">Alur Pemesanan</span>
+              <h2 id="cara-pesan-title" class="section-head__title t-h2">
+                Cara Pesan
+              </h2>
+            </header>
+
+            <ol class="langkah-list">
+              <li class="langkah">
+                <span class="langkah__num" aria-hidden="true">01</span>
+                <div>
+                  <h3 class="t-h3">Kirim kebutuhan</h3>
+                  <p class="langkah__kalimat t-body">
+                    Sebutkan jenis ikan, ukuran, perkiraan jumlah, lokasi, dan
+                    kapan dibutuhkan.
+                  </p>
+                </div>
+              </li>
+
+              <li class="langkah">
+                <span class="langkah__num" aria-hidden="true">02</span>
+                <div>
+                  <h3 class="t-h3">Kami balas stok &amp; harga</h3>
+                  <p class="langkah__kalimat t-body">
+                    Kami informasikan stok yang ada, ukuran tersedia, harga hari
+                    itu, dan minimum order.
+                  </p>
+                </div>
+              </li>
+
+              <li class="langkah">
+                <span class="langkah__num" aria-hidden="true">03</span>
+                <div>
+                  <h3 class="t-h3">Konfirmasi</h3>
+                  <p class="langkah__kalimat t-body">
+                    Anda konfirmasi jumlah akhir dan jadwal pengiriman.
+                  </p>
+                </div>
+              </li>
+
+              <li class="langkah">
+                <span class="langkah__num" aria-hidden="true">04</span>
+                <div>
+                  <h3 class="t-h3">Pengiriman</h3>
+                  <p class="langkah__kalimat t-body">
+                    Pesanan disiapkan dan dikirim ke lokasi usaha Anda.<!-- if:payment.waktu -->
+                    {{payment.waktu}}.<!-- /if -->
+                  </p>
+                </div>
+              </li>
+            </ol>
+
+            <div class="mt-8">
+              <a
+                class="btn-action t-button" data-press
+                href="{{wa:rutin}}"
+                target="_blank"
+                rel="noopener"
+              >
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                  focusable="false"
+                >
+                  <path
+                    d="M20.5 11.6a8.5 8.5 0 0 1-12.4 7.6L3.5 20.5l1.4-4.4A8.5 8.5 0 1 1 20.5 11.6Z"
+                  />
+                  <path
+                    d="M9 9.3c.4 1.5 1.6 2.9 3.1 3.6l.9-.9 2 .9v1.4c-.1.4-.5.6-.9.6-3-.3-5.4-2.7-5.7-5.7 0-.4.2-.8.6-.9h1.4l.9 2-.9.9"
+                  />
+                </svg>
+                Tanya Stok &amp; Harga
+              </a>
+              <p class="t-caption mt-3 text-ink-muted">
+                Cek stok tanpa komitmen — banyak yang menanyakan harga dulu
+                untuk perbandingan.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 8. Bukti & Identitas Bisnis ===== -->
+      <section id="tentang" class="sec-sedang" aria-labelledby="tentang-title">
+        <div class="container-std">
+          <header class="section-head">
+            <span class="section-head__label t-label">Identitas</span>
+            <h2 id="tentang-title" class="section-head__title t-h2">
+              Tentang Kami
+            </h2>
+            <p class="section-head__intro t-body measure">
+              {{business.nama}} beroperasi di {{location.alamat}}, melayani
+              pengiriman ke {{delivery.areaRingkas}}.<!-- if:contact.namaPIC -->
+              Pesanan ditangani langsung oleh {{contact.namaPIC}}.<!-- /if -->
+            </p>
+          </header>
+
+          <div class="bukti-grid">
+            <!-- Blok fakta -->
+            <div class="bukti-facts">
+              <dl>
+                <div class="data-row">
+                  <dt class="data-row__label t-label">Alamat</dt>
+                  <dd class="data-row__value t-data">
+                    {{location.alamat}}<!-- if:location.mapsUrl --><br />
+                    <a
+                      class="link-secondary t-caption"
+                      href="{{location.mapsUrl}}"
+                      target="_blank"
+                      rel="noopener"
+                    >
+                      <svg
+                        width="20"
+                        height="20"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        aria-hidden="true"
+                        focusable="false"
+                      >
+                        <path
+                          d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11Z"
+                        />
+                        <circle cx="12" cy="10" r="2.5" />
+                      </svg>
+                      Lihat di Google Maps </a
+                    ><!-- /if -->
+                  </dd>
+                </div>
+
+                <div class="data-row">
+                  <dt class="data-row__label t-label">Jam operasional</dt>
+                  <dd class="data-row__value t-data">{{contact.jamLayanan}}</dd>
+                </div>
+
+                <!-- if:contact.namaPIC -->
+                <div class="data-row">
+                  <dt class="data-row__label t-label">Ditangani oleh</dt>
+                  <dd class="data-row__value t-data">{{contact.namaPIC}}</dd>
+                </div>
+                <!-- /if -->
+
+                <!-- if:business.tahunBerdiri -->
+                <div class="data-row">
+                  <dt class="data-row__label t-label">Beroperasi sejak</dt>
+                  <dd class="data-row__value t-data">
+                    {{business.tahunBerdiri}}
+                  </dd>
+                </div>
+                <!-- /if -->
+
+                <!-- if:contact.instagram -->
+                <div class="data-row">
+                  <dt class="data-row__label t-label">Instagram</dt>
+                  <dd class="data-row__value t-data">
+                    <a
+                      class="link-secondary t-data"
+                      href="https://instagram.com/{{contact.instagram}}"
+                      target="_blank"
+                      rel="noopener"
+                      >{{contact.instagram}}</a
+                    >
+                  </dd>
+                </div>
+                <!-- /if -->
+              </dl>
+
+              <p class="t-label mt-6 text-ink-muted">WhatsApp</p>
+              <a
+                class="wa-number t-data-lg" data-press="warna"
+                href="{{wa:umum}}"
+                target="_blank"
+                rel="noopener"
+                >{{contact.whatsappTampil}}</a
+              >
+            </div>
+
+            <!-- Foto: bukti, bukan pemandangan. Ukurannya lebih kecil dari
+               section lain. Di mobile hanya dua yang tampil. -->
+            <div class="bukti-photos">
+              <figure class="bukti-photo">
+                <div class="bukti-photo__media">
+                  <!-- if:photography.fotoLokasi -->
+                  <img
+                    src="{{photography.fotoLokasi}}"
+                    alt="Tempat penampungan ikan {{business.nama}}"
+                    width="900"
+                    height="600"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  <!-- /if -->
+                  <!-- ifnot:photography.fotoLokasi -->
+                  <div
+                    class="photo-slot"
+                    style="width: 100%; height: 100%"
+                    aria-hidden="true"
+                  ></div>
+                  <!-- /ifnot -->
+                </div>
+                <figcaption class="photo-caption t-caption">
+                  Penampungan di {{location.alamat}}
+                </figcaption>
+              </figure>
+
+              <figure class="bukti-photo">
+                <div class="bukti-photo__media">
+                  <!-- if:photography.fotoKendaraan -->
+                  <img
+                    src="{{photography.fotoKendaraan}}"
+                    alt="Kendaraan pengiriman {{business.nama}}"
+                    width="900"
+                    height="600"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  <!-- /if -->
+                  <!-- ifnot:photography.fotoKendaraan -->
+                  <div
+                    class="photo-slot"
+                    style="width: 100%; height: 100%"
+                    aria-hidden="true"
+                  ></div>
+                  <!-- /ifnot -->
+                </div>
+                <figcaption class="photo-caption t-caption">
+                  Kendaraan pengiriman harian
+                </figcaption>
+              </figure>
+
+              <figure class="bukti-photo">
+                <div class="bukti-photo__media">
+                  <!-- if:photography.fotoPIC -->
+                  <img
+                    src="{{photography.fotoPIC}}"
+                    alt="Orang yang menangani pesanan di {{business.nama}}"
+                    width="900"
+                    height="600"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  <!-- /if -->
+                  <!-- ifnot:photography.fotoPIC -->
+                  <div
+                    class="photo-slot"
+                    style="width: 100%; height: 100%"
+                    aria-hidden="true"
+                  ></div>
+                  <!-- /ifnot -->
+                </div>
+                <figcaption class="photo-caption t-caption">
+                  Yang menangani pesanan
+                </figcaption>
+              </figure>
+            </div>
+          </div>
+
+          <!-- Testimoni hanya dirender bila ada testimoni ASLI di data.
+             Bila kosong, seluruh blok ini hilang dan tata letak tetap utuh. -->
+          <!-- if:testimonials -->
+          <div class="testimoni-wrap">
+            <!-- repeat:testimonials -->
+            <figure class="testimoni">
+              <blockquote class="t-body measure">{{.kalimat}}</blockquote>
+              <figcaption class="testimoni__sumber t-caption">
+                {{.jenisUsaha}} — {{.lokasi}}
+              </figcaption>
+            </figure>
+            <!-- /repeat -->
+          </div>
+          <!-- /if -->
+        </div>
+      </section>
+
+      <!-- ===== 9. FAQ ===== -->
+      <section id="faq" class="sec-sedang" aria-labelledby="faq-title">
+        <div class="container-mid">
+          <header class="section-head">
+            <span class="section-head__label t-label">FAQ</span>
+            <h2 id="faq-title" class="section-head__title t-h2">
+              Pertanyaan yang Sering Ditanyakan
+            </h2>
+          </header>
+
+          <div class="faq-list" id="faq-list">
+            <div class="faq-item" data-open="false">
+              <h3>
+                <button
+                  class="faq-q" data-press="warna"
+                  type="button"
+                  id="faq-btn-1"
+                  aria-expanded="false"
+                  aria-controls="faq-a-1"
+                >
+                  <span>Berapa minimum order?</span>
+                  <svg
+                    class="faq-sign"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    aria-hidden="true"
+                    focusable="false"
+                  >
+                    <path d="M5 12h14" />
+                    <path class="faq-sign__v" d="M12 5v14" />
+                  </svg>
+                </button>
+              </h3>
+              <div
+                class="faq-a"
+                id="faq-a-1"
+                role="region"
+                aria-labelledby="faq-btn-1"
+              >
+                <div class="faq-a__inner">
+                  <div class="t-body">
+                    <p>
+                      {{supply.minimumOrder}}<!-- if:supply.minimumOrderLuarKota -->
+                      Untuk luar kota, {{supply.minimumOrderLuarKota}}.<!-- /if -->
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="faq-item" data-open="false">
+              <h3>
+                <button
+                  class="faq-q" data-press="warna"
+                  type="button"
+                  id="faq-btn-2"
+                  aria-expanded="false"
+                  aria-controls="faq-a-2"
+                >
+                  <span>Ukuran ikan bisa dipilih?</span>
+                  <svg
+                    class="faq-sign"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    aria-hidden="true"
+                    focusable="false"
+                  >
+                    <path d="M5 12h14" />
+                    <path class="faq-sign__v" d="M12 5v14" />
+                  </svg>
+                </button>
+              </h3>
+              <div
+                class="faq-a"
+                id="faq-a-2"
+                role="region"
+                aria-labelledby="faq-btn-2"
+              >
+                <div class="faq-a__inner">
+                  <div class="t-body">
+                    <p>{{supply.ukuranBisaDipilih}}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="faq-item" data-open="false">
+              <h3>
+                <button
+                  class="faq-q" data-press="warna"
+                  type="button"
+                  id="faq-btn-3"
+                  aria-expanded="false"
+                  aria-controls="faq-a-3"
+                >
+                  <span
+                    >Melayani pengiriman ke mana saja, dan bagaimana
+                    ongkirnya?</span
+                  >
+                  <svg
+                    class="faq-sign"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    aria-hidden="true"
+                    focusable="false"
+                  >
+                    <path d="M5 12h14" />
+                    <path class="faq-sign__v" d="M12 5v14" />
+                  </svg>
+                </button>
+              </h3>
+              <div
+                class="faq-a"
+                id="faq-a-3"
+                role="region"
+                aria-labelledby="faq-btn-3"
+              >
+                <div class="faq-a__inner">
+                  <div class="t-body">
+                    <p>
+                      Kami mengirim ke {{delivery.areaRingkas}}.
+                      {{delivery.kebijakanLuarArea}}
+                    </p>
+                    <!-- if:delivery.ongkir -->
+                    <p>Ongkir: {{delivery.ongkir}}.</p>
+                    <!-- /if --><!-- if:delivery.ambilSendiri -->
+                    <p>{{delivery.ambilSendiri}}.</p>
+                    <!-- /if -->
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="faq-item" data-open="false">
+              <h3>
+                <button
+                  class="faq-q" data-press="warna"
+                  type="button"
+                  id="faq-btn-4"
+                  aria-expanded="false"
+                  aria-controls="faq-a-4"
+                >
+                  <span>Kapan batas waktu pesan untuk kirim besok?</span>
+                  <svg
+                    class="faq-sign"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    aria-hidden="true"
+                    focusable="false"
+                  >
+                    <path d="M5 12h14" />
+                    <path class="faq-sign__v" d="M12 5v14" />
+                  </svg>
+                </button>
+              </h3>
+              <div
+                class="faq-a"
+                id="faq-a-4"
+                role="region"
+                aria-labelledby="faq-btn-4"
+              >
+                <div class="faq-a__inner">
+                  <div class="t-body">
+                    <p>
+                      {{supply.orderCutoff}}. Jadwal berangkat:
+                      {{delivery.jadwal}}.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="faq-item" data-open="false">
+              <h3>
+                <button
+                  class="faq-q" data-press="warna"
+                  type="button"
+                  id="faq-btn-5"
+                  aria-expanded="false"
+                  aria-controls="faq-a-5"
+                >
+                  <span>Bagaimana cara dan waktu pembayaran?</span>
+                  <svg
+                    class="faq-sign"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    aria-hidden="true"
+                    focusable="false"
+                  >
+                    <path d="M5 12h14" />
+                    <path class="faq-sign__v" d="M12 5v14" />
+                  </svg>
+                </button>
+              </h3>
+              <div
+                class="faq-a"
+                id="faq-a-5"
+                role="region"
+                aria-labelledby="faq-btn-5"
+              >
+                <div class="faq-a__inner">
+                  <div class="t-body">
+                    <!-- if:payment.metode -->
+                    <p>
+                      {{payment.metode}}.<!-- if:payment.waktu -->
+                      {{payment.waktu}}.<!-- /if -->
+                    </p>
+                    <!-- /if --><!-- if:payment.nota -->
+                    <p>{{payment.nota}}.</p>
+                    <!-- /if -->
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="faq-item" data-open="false">
+              <h3>
+                <button
+                  class="faq-q" data-press="warna"
+                  type="button"
+                  id="faq-btn-6"
+                  aria-expanded="false"
+                  aria-controls="faq-a-6"
+                >
+                  <span>Bagaimana kalau ada ikan mati saat sampai?</span>
+                  <svg
+                    class="faq-sign"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    aria-hidden="true"
+                    focusable="false"
+                  >
+                    <path d="M5 12h14" />
+                    <path class="faq-sign__v" d="M12 5v14" />
+                  </svg>
+                </button>
+              </h3>
+              <div
+                class="faq-a"
+                id="faq-a-6"
+                role="region"
+                aria-labelledby="faq-btn-6"
+              >
+                <div class="faq-a__inner">
+                  <div class="t-body">
+                    <p>{{policy.ikanMati}}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="faq-item" data-open="false">
+              <h3>
+                <button
+                  class="faq-q" data-press="warna"
+                  type="button"
+                  id="faq-btn-7"
+                  aria-expanded="false"
+                  aria-controls="faq-a-7"
+                >
+                  <span>Bagaimana kalau ukuran tidak sesuai kesepakatan?</span>
+                  <svg
+                    class="faq-sign"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    aria-hidden="true"
+                    focusable="false"
+                  >
+                    <path d="M5 12h14" />
+                    <path class="faq-sign__v" d="M12 5v14" />
+                  </svg>
+                </button>
+              </h3>
+              <div
+                class="faq-a"
+                id="faq-a-7"
+                role="region"
+                aria-labelledby="faq-btn-7"
+              >
+                <div class="faq-a__inner">
+                  <div class="t-body">
+                    <p>{{policy.ukuranTidakSesuai}}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="faq-item" data-open="false">
+              <h3>
+                <button
+                  class="faq-q" data-press="warna"
+                  type="button"
+                  id="faq-btn-8"
+                  aria-expanded="false"
+                  aria-controls="faq-a-8"
+                >
+                  <span
+                    >Bisa pesan dalam jumlah besar atau rutin? Berapa lama
+                    sebelumnya harus dikonfirmasi?</span
+                  >
+                  <svg
+                    class="faq-sign"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    aria-hidden="true"
+                    focusable="false"
+                  >
+                    <path d="M5 12h14" />
+                    <path class="faq-sign__v" d="M12 5v14" />
+                  </svg>
+                </button>
+              </h3>
+              <div
+                class="faq-a"
+                id="faq-a-8"
+                role="region"
+                aria-labelledby="faq-btn-8"
+              >
+                <div class="faq-a__inner">
+                  <div class="t-body">
+                    <p>{{supply.konfirmasiPesananBesar}}.</p>
+                    <p>{{policy.pesananRutin}}</p>
+                    <!-- if:policy.perubahanPesanan -->
+                    <p>{{policy.perubahanPesanan}}</p>
+                    <!-- /if -->
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <p class="t-body mt-6">
+            Pertanyaan lain?
+            <a
+              class="link-secondary t-body"
+              href="{{wa:umum}}"
+              target="_blank"
+              rel="noopener"
+              >Tanyakan langsung</a
+            >
+          </p>
+        </div>
+      </section>
+
+      <!-- ===== 10. CTA Penutup ===== -->
+      <section
+        id="cta-penutup"
+        class="sec-lapang surface-dark"
+        aria-labelledby="cta-title"
+      >
+        <div class="container-std">
+          <div class="col-cta">
+            <h2 id="cta-title" class="t-h2">
+              Butuh Pasokan Ikan Rutin untuk Usaha Anda?
+            </h2>
+
+            <p class="t-lead mt-5">
+              Sebutkan jenis ikan, ukuran, perkiraan jumlah, lokasi, dan kapan
+              dibutuhkan — kami balas dengan stok, harga, dan jadwal kirim yang
+              tersedia.
+            </p>
+
+            <div class="mt-8">
+              <a
+                class="btn-action t-button" data-press
+                href="{{wa:rutin}}"
+                target="_blank"
+                rel="noopener"
+              >
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                  focusable="false"
+                >
+                  <path
+                    d="M20.5 11.6a8.5 8.5 0 0 1-12.4 7.6L3.5 20.5l1.4-4.4A8.5 8.5 0 1 1 20.5 11.6Z"
+                  />
+                  <path
+                    d="M9 9.3c.4 1.5 1.6 2.9 3.1 3.6l.9-.9 2 .9v1.4c-.1.4-.5.6-.9.6-3-.3-5.4-2.7-5.7-5.7 0-.4.2-.8.6-.9h1.4l.9 2-.9.9"
+                  />
+                </svg>
+                Tanya Stok &amp; Harga via WhatsApp
+              </a>
+            </div>
+
+            <!-- Hal yang sebaiknya disebutkan saat bertanya. -->
+            <ul class="cta-daftar t-label mt-8">
+              <li>Jenis ikan</li>
+              <li>Ukuran</li>
+              <li>Perkiraan jumlah</li>
+              <li>Lokasi</li>
+              <li>Tanggal dibutuhkan</li>
+            </ul>
+
+            <p class="cta-kontak t-data mt-6">
+              {{contact.whatsappTampil}} &middot; {{contact.jamLayanan}}
+            </p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- ===== 11. Footer ===== -->
+    <footer class="site-footer surface-ink">
+      <div class="container-std">
+        <div class="footer-grid">
+          <div class="footer-col">
+            <h2 class="t-label">{{business.nama}}</h2>
+            <p class="t-caption">{{business.deskripsi}}</p>
+          </div>
+
+          <div class="footer-col">
+            <h2 class="t-label">Kontak</h2>
+            <ul class="t-caption">
+              <li>
+                <a href="{{wa:umum}}" target="_blank" rel="noopener"
+                  >WhatsApp {{contact.whatsappTampil}}</a
+                >
+              </li>
+              <li>{{location.alamat}}</li>
+              <!-- if:location.mapsUrl -->
+              <li>
+                <a href="{{location.mapsUrl}}" target="_blank" rel="noopener"
+                  >Lihat di Google Maps</a
+                >
+              </li>
+              <!-- /if -->
+              <li>{{contact.jamLayanan}}</li>
+            </ul>
+          </div>
+
+          <div class="footer-col">
+            <h2 class="t-label">Area pengiriman</h2>
+            <ul class="t-caption">
+              <li>{{delivery.areaRingkas}}</li>
+              <li><a href="#ketentuan-supply">Lihat daftar area lengkap</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-col">
+            <h2 class="t-label">Halaman</h2>
+            <ul class="t-caption">
+              <li><a href="#jenis-ikan">Jenis Ikan</a></li>
+              <li><a href="#ketentuan-supply">Ketentuan Supply</a></li>
+              <li><a href="#cara-pesan">Cara Pesan</a></li>
+              <li><a href="#faq">FAQ</a></li>
+              <!-- if:contact.instagram -->
+              <li>
+                <a
+                  href="https://instagram.com/{{contact.instagram}}"
+                  target="_blank"
+                  rel="noopener"
+                  >Instagram</a
+                >
+              </li>
+              <!-- /if -->
+            </ul>
+          </div>
+        </div>
+
+        <p class="footer-copyright">
+          &copy; {{_computed.tahunSekarang}} {{business.nama}}. Seluruh hak
+          dilindungi.
+        </p>
+      </div>
+    </footer>
+    <div class="footer-spacer" aria-hidden="true"></div>
+
+    <!-- ===== 12. Sticky WhatsApp (mobile) ===== -->
+    <div class="sticky-cta" id="sticky-cta" data-show="false">
+      <a
+        class="btn-action btn-action--block t-button" data-press="lembut"
+        href="{{wa:umum}}"
+        target="_blank"
+        rel="noopener"
+      >
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+          focusable="false"
+        >
+          <path
+            d="M20.5 11.6a8.5 8.5 0 0 1-12.4 7.6L3.5 20.5l1.4-4.4A8.5 8.5 0 1 1 20.5 11.6Z"
+          />
+          <path
+            d="M9 9.3c.4 1.5 1.6 2.9 3.1 3.6l.9-.9 2 .9v1.4c-.1.4-.5.6-.9.6-3-.3-5.4-2.7-5.7-5.7 0-.4.2-.8.6-.9h1.4l.9 2-.9.9"
+          />
+        </svg>
+        Tanya Stok &amp; Harga
+      </a>
+    </div>
+
+    <!-- motion.js lebih dulu: main.js memakai window.Motion.
+       defer menjamin urutannya tanpa memblokir render. -->
+    <script src="assets/motion.js" defer></script>
+    <script src="assets/main.js" defer></script>
+  </body>
+</html>

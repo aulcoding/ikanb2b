@@ -1,0 +1,20 @@
+{
+  "name": "ikanb2b",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Landing page B2B supplier & distributor ikan. HTML5 + Tailwind CSS + Vanilla JavaScript.",
+  "type": "module",
+  "scripts": {
+    "fonts": "node scripts/fetch-fonts.mjs",
+    "build:css": "tailwindcss -i src/styles.css -o dist/assets/styles.css --minify",
+    "build:html": "node scripts/build-html.mjs",
+    "build": "npm run build:css && npm run build:html",
+    "watch:css": "tailwindcss -i src/styles.css -o dist/assets/styles.css --watch",
+    "serve": "python3 -m http.server 5173 --directory dist",
+    "images": "node scripts/optimize-images.mjs",
+    "deploy": "npm run build && node scripts/deploy-pages.mjs"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.3.3"
+  }
+}

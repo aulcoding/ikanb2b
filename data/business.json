@@ -1,0 +1,207 @@
+{
+  "_meta": {
+    "dataStatus": "CONTOH",
+    "catatan": "SELURUH ISI BERKAS INI ADALAH DATA CONTOH, BUKAN DATA BISNIS NYATA. Ganti setiap nilai dengan data asli, lalu ubah dataStatus menjadi \"ASLI\" agar banner peringatan di halaman hilang. Nilai kosong (\"\") sengaja dibiarkan kosong: barisnya otomatis tidak dirender.",
+    "wajibDiperiksaPemilik": [
+      "policy.ikanMati",
+      "policy.ukuranTidakSesuai",
+      "supply.minimumOrder",
+      "supply.orderCutoff",
+      "delivery.areas",
+      "contact.whatsappNumber"
+    ]
+  },
+  "business": {
+    "nama": "Rumingkang Lauk",
+    "deskriptor": "Supplier & Distributor Ikan",
+    "deskripsi": "Supplier ikan untuk kolam pemancingan, toko ikan segar, restoran, dan rumah makan.",
+    "tahunBerdiri": ""
+  },
+  "contact": {
+    "whatsappNumber": "6281234567890",
+    "whatsappTampil": "0812-3456-7890",
+    "jamLayanan": "Setiap hari, 05.00–20.00 WIB",
+    "namaPIC": "",
+    "instagram": "",
+    "nomorCadangan": ""
+  },
+  "location": {
+    "alamat": "Jl. Contoh Raya No. 10, Cileunyi, Kabupaten Bandung",
+    "mapsUrl": "",
+    "patokan": ""
+  },
+  "products": [
+    {
+      "nama": "Ikan Nila",
+      "ukuran": "500–700 gram/ekor",
+      "kegunaan": "Ukuran konsumsi untuk rumah makan dan toko ikan segar.",
+      "status": "tersedia",
+      "minimumOrder": "30 kg",
+      "foto": "assets/img/web/nils-es-web.webp",
+      "kategori": "konsumsi"
+    },
+    {
+      "nama": "Ikan Lele",
+      "ukuran": "8–10 ekor/kg",
+      "kegunaan": "Ukuran warung dan rumah makan harian.",
+      "status": "tersedia",
+      "minimumOrder": "30 kg",
+      "foto": "assets/img/web/lele-2-tiny-web.webp",
+      "kategori": "konsumsi"
+    },
+    {
+      "nama": "Ikan Gurame",
+      "ukuran": "500 gram – 1 kg/ekor",
+      "kegunaan": "Menu gurame bakar dan goreng di restoran.",
+      "status": "terbatas",
+      "minimumOrder": "20 kg",
+      "foto": "assets/img/web/Ikan-Gurame-Soang-web.webp",
+      "kategori": "konsumsi"
+    },
+    {
+      "nama": "Ikan Mas",
+      "ukuran": "300–800 gram/ekor",
+      "kegunaan": "Isi kolam pemancingan harian.",
+      "status": "tersedia",
+      "minimumOrder": "50 kg",
+      "foto": "assets/img/web/ikan-mas-kolam-web.webp",
+      "kategori": "pancing"
+    },
+    {
+      "nama": "Ikan Patin",
+      "ukuran": "700 gram – 1,2 kg/ekor",
+      "kegunaan": "Menu pindang dan olahan fillet.",
+      "status": "tersedia",
+      "minimumOrder": "",
+      "foto": "",
+      "kategori": "konsumsi"
+    },
+    {
+      "nama": "Ikan Bawal",
+      "ukuran": "300–600 gram/ekor",
+      "kegunaan": "Kolam pemancingan dan menu goreng.",
+      "status": "tersedia",
+      "minimumOrder": "",
+      "foto": "",
+      "kategori": "pancing"
+    },
+    {
+      "nama": "Ikan Mujair",
+      "ukuran": "250–500 gram/ekor",
+      "kegunaan": "Kebutuhan pedagang ikan segar.",
+      "status": "terbatas",
+      "minimumOrder": "",
+      "foto": "",
+      "kategori": "konsumsi"
+    }
+  ],
+  "businessTypes": [
+    {
+      "nama": "Kolam Pemancingan",
+      "konteks": "Pengisian kolam menjelang akhir pekan dan saat lomba.",
+      "ukuranBiasa": "300–800 gram/ekor, disortir seragam",
+      "kondisiIkan": "Hidup sampai lokasi",
+      "polaKirim": "Dikonfirmasi H-2, dikirim pagi",
+      "foto": "assets/img/web/man-fishing-holds-angling-rod-jpg-tiny-web.webp"
+    },
+    {
+      "nama": "Toko Ikan Segar",
+      "konteks": "Pasokan untuk dijual kembali dengan harga grosir.",
+      "ukuranBiasa": "Campuran sesuai permintaan pembeli toko",
+      "kondisiIkan": "Hidup atau segar berpendingin",
+      "polaKirim": "2–3 kali seminggu",
+      "foto": "assets/img/web/ikan-potong-segar-2-web.webp"
+    },
+    {
+      "nama": "Restoran",
+      "konteks": "Ukuran per porsi yang konsisten untuk dapur.",
+      "ukuranBiasa": "500–700 gram/ekor, toleransi sempit",
+      "kondisiIkan": "Segar, dikirim sebelum dapur buka",
+      "polaKirim": "Harian atau dua hari sekali",
+      "foto": "assets/img/web/gurame-goreng-web.webp"
+    },
+    {
+      "nama": "Kedai Kaki Lima",
+      "konteks": "Kebutuhan operasional harian dengan jumlah tetap.",
+      "ukuranBiasa": "8–10 ekor/kg untuk lele, 500 gram untuk nila",
+      "kondisiIkan": "Hidup atau segar",
+      "polaKirim": "Harian, pagi",
+      "foto": "assets/img/web/nila-2-web.webp"
+    }
+  ],
+  "supply": {
+    "minimumOrder": "30 kg per pengiriman (dalam kota)",
+    "minimumOrderRingkas": "Mulai 30 kg",
+    "minimumOrderLuarKota": "80 kg per pengiriman (luar kota)",
+    "orderCutoff": "Pesan sebelum 16.00 untuk kirim besok pagi",
+    "konfirmasiPesananBesar": "H-2 untuk pesanan di atas 200 kg",
+    "kapasitas": "",
+    "ukuranBisaDipilih": "Ukuran dapat diminta dan akan kami sesuaikan dengan ketersediaan stok saat itu."
+  },
+  "delivery": {
+    "areaRingkas": "Seluruh Jawa Barat",
+    "areas": [
+      "Kota Bandung",
+      "Kabupaten Bandung",
+      "Cimahi",
+      "Bandung Barat",
+      "Cileunyi",
+      "Soreang",
+      "Padalarang",
+      "Jatinangor",
+      "Tasikmalaya",
+      "Garut",
+      "Karawang"
+    ],
+    "jadwal": "Senin–Minggu, berangkat 05.00–08.00 WIB",
+    "kebijakanLuarArea": "Di luar daftar ini, silakan tanyakan dulu — sebagian masih bisa dijangkau dengan penyesuaian minimum order.",
+    "ongkir": "Gratis untuk pesanan di atas 100 kg dalam kota; di bawah itu menyesuaikan jarak",
+    "ambilSendiri": "Bisa diambil sendiri di lokasi pada jam operasional"
+  },
+  "payment": {
+    "metode": "Tunai saat terima atau transfer bank",
+    "waktu": "Dibayar saat barang diterima",
+    "nota": "Nota diberikan setiap pengiriman"
+  },
+  "policy": {
+    "ikanMati": "Ikan yang mati saat serah terima diganti atau dipotong dari tagihan, dihitung bersama di lokasi sebelum kendaraan meninggalkan tempat.",
+    "ukuranTidakSesuai": "Bila ukuran meleset dari kesepakatan, pesanan boleh ditolak saat serah terima tanpa biaya, atau disesuaikan pada pengiriman berikutnya.",
+    "perubahanPesanan": "",
+    "pesananRutin": "Pesanan rutin dijadwalkan di awal dan dikonfirmasi ulang sehari sebelum pengiriman."
+  },
+  "handling": [
+    {
+      "tahap": "01",
+      "judul": "Sortir",
+      "kalimat": "Ikan dipisahkan per ukuran sebelum dimuat, sehingga yang dikirim sesuai kesepakatan — bukan campuran sisa panen.",
+      "foto": ""
+    },
+    {
+      "tahap": "02",
+      "judul": "Timbang",
+      "kalimat": "Penimbangan dilakukan setelah ikan ditiriskan, disaksikan bersama saat serah terima.",
+      "foto": ""
+    },
+    {
+      "tahap": "03",
+      "judul": "Muat",
+      "kalimat": "Pengangkutan disiapkan sesuai peruntukan: ikan hidup untuk kolam pemancingan, ikan segar berpendingin untuk dapur.",
+      "foto": ""
+    },
+    {
+      "tahap": "04",
+      "judul": "Kirim",
+      "kalimat": "Berangkat pagi agar sampai sebelum jam sibuk pelanggan, dengan rute yang dikelompokkan per area.",
+      "foto": ""
+    }
+  ],
+  "photography": {
+    "heroImage": "assets/img/web/nila-monyong-tiny-web.webp",
+    "heroAlt": "Ikan Nila segar berkualitas",
+    "fotoLokasi": "",
+    "fotoKendaraan": "",
+    "fotoPIC": "",
+    "milikSendiri": false
+  },
+  "testimonials": []
+}

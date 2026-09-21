@@ -1,0 +1,1860 @@
+/* =============================================================
+   styles.css — Fondasi visual.
+
+   Arahnya: antarmuka yang terasa seperti benda, bukan seperti
+   dokumen. Tiga hal yang membedakannya dari versi sebelumnya:
+
+   1. MATERIAL. Navbar, panel hero, sheet menu, dan bar WhatsApp
+      bukan lagi kotak putih solid, melainkan lapisan tembus yang
+      dilalui konten di bawahnya. Bobot bahan menyampaikan hierarki:
+      makin besar permukaannya, makin tebal buramnya dan makin
+      dalam bayangannya.
+   2. GERAK BERBASIS PEGAS. Segala yang bisa disentuh digerakkan
+      oleh motion.js, bukan oleh transition CSS — supaya bisa
+      direbut dan dibalik di tengah jalan. Transisi CSS di berkas
+      ini hanya untuk yang TIDAK bisa digenggam: warna dan tekan.
+   3. TIPOGRAFI OPTIS. Fraunces punya sumbu opsz; tracking dan
+      leading ditetapkan per ukuran, tidak satu angka untuk semua.
+
+   Tiga permintaan sistem dihormati penuh di bagian paling bawah:
+   prefers-reduced-motion, prefers-reduced-transparency, dan
+   prefers-contrast.
+   ============================================================= */
+
+@import "tailwindcss";
+
+/* Pindai template sebagai sumber kelas (Tailwind v4). */
+@source "./index.html";
+
+/* -------------------------------------------------------------
+   TOKEN TEMA
+   ------------------------------------------------------------- */
+@theme {
+  /* Hanya tiga mode: mobile (<768), tablet (768-1023), desktop (1024+).
+     Breakpoint bawaan Tailwind dihapus agar tidak ada mode liar. */
+  --breakpoint-*: initial;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1440px;
+
+  /* Palet hangat: kertas, tinta, krem, aprikot. */
+  --color-paper: #fdfdfd; /* latar utama halaman */
+  --color-ink: #161513; /* teks utama, headline */
+  --color-ink-soft: #46413a; /* teks sekunder DI ATAS MATERIAL — lihat vibrancy */
+  --color-ink-muted: #6b655c; /* teks sekunder di atas latar solid */
+  --color-line: #d6d2c9; /* garis 1px */
+  --color-line-strong: #b8b2a6; /* garis di atas latar krem */
+  --color-cream: #f2e9cf; /* latar section bertanda, teks di atas gelap */
+  --color-accent: #ebbf7d; /* HANYA tombol aksi */
+  --color-accent-hover: #e0ae62;
+  --color-on-accent: #161513; /* teks di atas tombol aksi */
+  --color-primary: #201d1d; /* latar section gelap */
+  --color-on-dark: #efeeec; /* teks di atas latar gelap */
+  --color-line-dark: #3a3532; /* garis di atas latar gelap */
+  --color-status-ok: #3f6b4e; /* status tersedia */
+  --color-status-warn: #9c4a21; /* status stok terbatas */
+
+  /* Dua family. Fraunces kini diunduh beserta sumbu opsz-nya
+     (lihat scripts/fetch-fonts.mjs) supaya font-optical-sizing
+     benar-benar mengubah bentuk huruf, bukan sekadar deklarasi. */
+  --font-sans: "Fraunces", Georgia, "Times New Roman", serif;
+  --font-mono: "Oswald", ui-monospace, "SFMono-Regular", Menlo, monospace;
+
+  /* Radius bertingkat. Sudut sekarang cukup besar untuk terbaca
+     sebagai benda; sudut bersarang memakai rumus concentric:
+     radius dalam = radius luar - padding. */
+  --radius-xs: 6px;
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+  --radius-DEFAULT: 10px;
+}
+
+/* -------------------------------------------------------------
+   TOKEN NON-TEMA — bahan, kedalaman, gerak.
+   Ditaruh di :root (bukan @theme) karena ini bukan skala utilitas
+   Tailwind, melainkan bahan yang dipakai komponen secara langsung.
+   ------------------------------------------------------------- */
+:root {
+  /* --- Tinggi chrome. Satu angka, dipakai navbar, scroll-padding,
+         dan pergeseran hero. Tidak ada 57px yang ditulis tangan. --- */
+  --header-h: 56px;
+
+  /* --- Bahan tembus.
+         Dua bobot, dan bobot itulah yang menyampaikan hierarki:
+         permukaan yang lebih besar dan lebih penting mendapat bahan
+         lebih tebal, buram lebih kuat, dan bayangan lebih dalam.
+           regular -> navbar (memisahkan wilayah)
+           thick   -> panel hero & sheet menu (menanggung teks panjang)
+         ATURAN: jangan pernah menumpuk bahan terang di atas bahan
+         terang lain — keterbacaannya langsung hancur. Itu sebabnya
+         sheet menu dipotong di garis navbar, tidak ditumpuk. --- */
+  --material-regular: color-mix(in oklab, var(--color-paper) 82%, transparent);
+  --material-thick: color-mix(in oklab, var(--color-paper) 92%, transparent);
+  --material-saturate: 180%;
+  --material-blur-md: 24px;
+  --material-blur-lg: 32px;
+  /* Tepi atas yang terang = cahaya tersangkut di bibir bahan. */
+  --material-edge: rgba(255, 255, 255, 0.6);
+
+  /* Kelambu peredup untuk tugas yang memblokir (sheet menu). */
+  --scrim: color-mix(in oklab, var(--color-ink) 38%, transparent);
+
+  /* --- Kedalaman. Dua lapis per level: bayangan dekat yang tajam
+         (kontak) + bayangan jauh yang lembut (ambient). Satu lapis
+         saja selalu terbaca seperti stiker. --- */
+  --shadow-1:
+    0 1px 2px color-mix(in oklab, var(--color-ink) 6%, transparent),
+    0 1px 3px color-mix(in oklab, var(--color-ink) 4%, transparent);
+  --shadow-2:
+    0 2px 4px color-mix(in oklab, var(--color-ink) 6%, transparent),
+    0 10px 24px -8px color-mix(in oklab, var(--color-ink) 14%, transparent);
+  --shadow-3:
+    0 3px 8px color-mix(in oklab, var(--color-ink) 7%, transparent),
+    0 28px 56px -16px color-mix(in oklab, var(--color-ink) 22%, transparent);
+
+  /* --- Gerak.
+         Kurva di bawah adalah pegas sungguhan yang sudah disampel
+         menjadi linear(): dipakai HANYA untuk hal yang tidak bisa
+         digenggam jari. Yang bisa digenggam dijalankan motion.js,
+         karena transisi CSS tidak bisa direbut di tengah jalan.
+         Angka redaman/respons memakai istilah Apple:
+           ui     = redaman 1.0 / respons 0.4s  (tanpa lewat target)
+           bounce = redaman 0.8 / respons 0.4s  (untuk yang bermomentum)
+           sheet  = redaman 0.8 / respons 0.3s  --- */
+  --ease-spring-ui: linear(
+    0, 0.0376, 0.1238, 0.2307, 0.3416, 0.4471, 0.5424, 0.6256, 0.6966, 0.7561,
+    0.8052, 0.8453, 0.8777, 0.9038, 0.9246, 0.9411, 0.9541, 0.9643, 0.9724,
+    0.9786, 0.9835, 0.9873, 0.9902, 0.9925, 0.9942, 0.9956, 0.9966, 0.9974, 1
+  );
+  --dur-spring-ui: 540ms;
+  /* Pegas yang memantul tidak punya token CSS: pantulan hanya pantas
+     dipakai setelah gerakan bermomentum, dan momentum hanya ada di
+     tempat jari menyentuh — artinya di motion.js, bukan di sini. */
+
+  /* Umpan balik tekan: secepat yang masih terlihat. Apa pun yang
+     lebih lambat dari ini mulai terasa seperti jeda. */
+  --dur-press: 100ms;
+  /* Perubahan warna murni: linear, tanpa percepatan, tidak menarik mata. */
+  --dur-warna: 120ms;
+}
+
+@media (min-width: 768px) {
+  :root {
+    --header-h: 68px;
+  }
+}
+@media (min-width: 1024px) {
+  :root {
+    --header-h: 76px;
+  }
+}
+
+/* -------------------------------------------------------------
+   BASE
+   ------------------------------------------------------------- */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    /* Anchor berhenti di bawah chrome yang mengambang, bukan di baliknya. */
+    scroll-padding-top: calc(var(--header-h) + 12px);
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    /* 100% = ukuran teks pilihan pengguna, bukan 16px yang dipaku.
+       Seluruh spasi memakai rem supaya tata letak ikut membesar
+       ketika pengguna memperbesar teks sistemnya. */
+    font-size: 100%;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    /* Inti § tipografi: biarkan font mengubah bentuknya sendiri
+       mengikuti ukuran. Judul jadi lebih rapat dan tipis, teks kecil
+       jadi lebih terbuka. */
+    font-optical-sizing: auto;
+  }
+
+  [hidden] {
+    display: none !important;
+  }
+
+  img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+    border-radius: var(--radius-xs);
+  }
+  .surface-dark :focus-visible,
+  .surface-ink :focus-visible {
+    outline-color: var(--color-on-dark);
+  }
+
+  /* Ketukan tidak menunggu 300ms untuk memastikan itu bukan
+     ketukan-ganda. Halaman ini tidak punya ketukan-ganda. */
+  a,
+  button {
+    touch-action: manipulation;
+  }
+}
+
+/* -------------------------------------------------------------
+   COMPONENTS
+   ------------------------------------------------------------- */
+@layer components {
+  /* ---------- Container ---------- */
+  .container-std,
+  .container-mid,
+  .container-narrow {
+    width: 100%;
+    margin-inline: auto;
+    padding-inline: 1.25rem;
+  }
+  .container-std {
+    max-width: calc(1200px + 2.5rem);
+  }
+  .container-mid {
+    max-width: calc(760px + 2.5rem);
+  }
+  .container-narrow {
+    max-width: calc(680px + 2.5rem);
+  }
+
+  @media (min-width: 768px) {
+    .container-std,
+    .container-mid,
+    .container-narrow {
+      padding-inline: 2rem;
+    }
+    .container-std {
+      max-width: calc(1200px + 4rem);
+    }
+    .container-mid {
+      max-width: calc(760px + 4rem);
+    }
+    .container-narrow {
+      max-width: calc(680px + 4rem);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .container-std,
+    .container-mid,
+    .container-narrow {
+      padding-inline: 3rem;
+    }
+    .container-std {
+      max-width: calc(1200px + 6rem);
+    }
+    .container-mid {
+      max-width: calc(760px + 6rem);
+    }
+    .container-narrow {
+      max-width: calc(680px + 6rem);
+    }
+  }
+
+  /* ---------- Jarak antar-section ----------
+     Tiga kelompok berbeda; perbedaan itu sendiri adalah ritme
+     halaman. Satuan rem supaya ikut membesar bersama teks. */
+  .sec-lapang {
+    padding-block: clamp(4rem, 2.5rem + 6vw, 7rem);
+  }
+  .sec-sedang {
+    padding-block: clamp(3.5rem, 2.4rem + 4.5vw, 6rem);
+  }
+  .sec-rapat {
+    padding-block: clamp(3rem, 2.2rem + 3vw, 4.5rem);
+  }
+
+  /* ---------- Tipografi ----------
+     Tracking ditentukan per ukuran, bukan satu nilai untuk semua:
+     huruf besar terlihat terlalu renggang kalau dibiarkan apa adanya,
+     huruf kecil terlihat terlalu rapat. Leading bergerak terbalik
+     terhadap ukuran: makin besar makin rapat.
+     Ukuran memakai clamp dengan suku rem di dalamnya supaya tetap
+     ikut membesar bila pengguna memperbesar teks. */
+  .t-h1 {
+    font-family: var(--font-sans);
+    font-weight: 400;
+    font-size: clamp(2.125rem, 1.55rem + 2.9vw, 3.5rem);
+    line-height: 1.02;
+    letter-spacing: -0.032em;
+    font-optical-sizing: auto;
+    /* Teks sebesar ini tidak boleh memutus kata sembarangan. */
+    text-wrap: balance;
+  }
+  .t-h2 {
+    font-family: var(--font-sans);
+    font-weight: 400;
+    font-size: clamp(1.5625rem, 1.3rem + 1.3vw, 2.25rem);
+    line-height: 1.1;
+    letter-spacing: -0.022em;
+    font-optical-sizing: auto;
+    text-wrap: balance;
+  }
+  .t-h3 {
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: clamp(1.1875rem, 1.13rem + 0.28vw, 1.375rem);
+    line-height: 1.3;
+    letter-spacing: -0.012em;
+  }
+  .t-body {
+    font-family: var(--font-sans);
+    font-weight: 400;
+    font-size: clamp(1rem, 0.98rem + 0.1vw, 1.0625rem);
+    line-height: 1.6;
+    letter-spacing: 0;
+  }
+  .t-lead {
+    font-family: var(--font-sans);
+    font-weight: 400;
+    font-size: clamp(1.0625rem, 1.01rem + 0.28vw, 1.1875rem);
+    line-height: 1.5;
+    letter-spacing: -0.006em;
+    text-wrap: pretty;
+  }
+  .t-caption {
+    font-family: var(--font-sans);
+    font-weight: 400;
+    font-size: 0.875rem;
+    line-height: 1.45;
+    /* Teks kecil justru butuh tracking positif supaya tidak menempel. */
+    letter-spacing: 0.006em;
+  }
+  .t-data {
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: clamp(0.875rem, 0.85rem + 0.12vw, 0.9375rem);
+    line-height: 1.4;
+    letter-spacing: 0.012em;
+  }
+  .t-data-lg {
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: clamp(1.75rem, 1.5rem + 1vw, 2.25rem);
+    line-height: 1.1;
+    letter-spacing: 0;
+  }
+  .t-label {
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: 0.75rem;
+    line-height: 1.3;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+  }
+  .t-button {
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: 1rem;
+    line-height: 1;
+    letter-spacing: -0.006em;
+  }
+
+  .measure {
+    max-width: 68ch;
+  }
+
+  /* ---------- Permukaan solid ---------- */
+  .surface-dark {
+    background-color: var(--color-primary);
+    color: var(--color-on-dark);
+  }
+  .surface-ink {
+    background-color: var(--color-ink);
+    color: var(--color-on-dark);
+  }
+  .surface-cream {
+    background-color: var(--color-cream);
+  }
+
+  /* ---------- Vibrancy ----------
+     Teks sekunder di atas bahan tembus tidak boleh abu-abu rata:
+     latarnya berubah-ubah mengikuti foto di belakangnya. Kontrasnya
+     dinaikkan dan tracking-nya sedikit dilonggarkan. Warna pekat
+     tetap ditaruh di lapisan padat, tidak di atas bahan. */
+  .hero__panel .text-ink-muted,
+  .nav-sheet .text-ink-muted {
+    color: var(--color-ink-soft);
+    letter-spacing: 0.008em;
+  }
+
+  /* ---------- Umpan balik tekan ----------
+     Dipasang saat jari TURUN, bukan saat dilepas. Menunggu klik
+     berarti menunggu jari diangkat, dan jeda itu yang membuat
+     tombol terasa mati. .is-pressed dipasang motion.js supaya
+     tekanan bisa dibatalkan dengan menggeser jari menjauh. */
+  [data-press] {
+    transition:
+      transform var(--dur-press) ease-out,
+      background-color var(--dur-warna) linear,
+      color var(--dur-warna) linear;
+  }
+  [data-press]:active,
+  [data-press].is-pressed {
+    transform: scale(0.97);
+  }
+  /* Permukaan lebar: 3% terlalu banyak, terbaca seperti melenting. */
+  [data-press="lembut"]:active,
+  [data-press="lembut"].is-pressed {
+    transform: scale(0.99);
+  }
+  /* Baris panjang tidak diskalakan sama sekali — yang menyusut
+     hanya akan menggeser teks di sebelahnya. Yang berubah warnanya. */
+  [data-press="warna"]:active,
+  [data-press="warna"].is-pressed {
+    transform: none;
+    background-color: color-mix(in oklab, var(--color-ink) 5%, transparent);
+  }
+
+  /* ---------- Tombol aksi ----------
+     Satu-satunya pemakai warna accent selain titik status. */
+  .btn-action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.625rem;
+    min-height: 3.25rem;
+    padding-inline: 1.5rem;
+    border-radius: var(--radius-md);
+    background-color: var(--color-accent);
+    color: var(--color-on-accent);
+    text-decoration: none;
+    box-shadow: var(--shadow-1);
+  }
+  .btn-action:hover {
+    background-color: var(--color-accent-hover);
+  }
+  .btn-action--block {
+    display: flex;
+    width: 100%;
+  }
+
+  @media (min-width: 1024px) {
+    .btn-action {
+      min-height: 3rem;
+    }
+  }
+
+  /* Varian navbar. Di tablet tetap 48px karena layar sentuh;
+     44px hanya di desktop. */
+  .btn-action--nav {
+    min-height: 3rem;
+    padding-inline: 1.25rem;
+    border-radius: var(--radius-sm);
+  }
+  @media (min-width: 1024px) {
+    .btn-action--nav {
+      min-height: 2.75rem;
+    }
+  }
+
+  /* ---------- Tautan sekunder ----------
+     Bukan tombol outline. Tidak ada jenis tombol ketiga. */
+  .link-secondary {
+    display: inline-flex;
+    align-items: center;
+    min-height: 3rem;
+    font-weight: 500;
+    color: var(--color-ink);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 4px;
+    transition: color var(--dur-warna) linear;
+  }
+  .link-secondary:hover {
+    color: var(--color-primary);
+    text-decoration-thickness: 2px;
+  }
+  .surface-dark .link-secondary {
+    color: var(--color-on-dark);
+  }
+
+  /* ---------- Baris data ---------- */
+  .data-row {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    min-height: 2.75rem;
+    padding-block: 0.75rem;
+    border-bottom: 1px solid var(--color-line);
+  }
+  .data-row__label {
+    color: var(--color-ink-muted);
+  }
+  .data-row__value {
+    color: var(--color-ink);
+  }
+
+  .surface-dark .data-row {
+    border-bottom-color: var(--color-line-dark);
+  }
+  .surface-dark .data-row__label {
+    color: var(--color-on-dark);
+    opacity: 0.75;
+  }
+  .surface-dark .data-row__value {
+    color: var(--color-on-dark);
+  }
+
+  @media (min-width: 1024px) {
+    .data-row {
+      flex-direction: row;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 1.5rem;
+    }
+    .data-row__value {
+      text-align: right;
+    }
+  }
+
+  /* ---------- Judul section ---------- */
+  .section-head {
+    margin-bottom: 2rem;
+  }
+  .section-head__label {
+    display: block;
+    color: var(--color-ink-muted);
+    margin-bottom: 0.75rem;
+  }
+  .section-head__title {
+    color: var(--color-ink);
+  }
+  .section-head__intro {
+    margin-top: 0.75rem;
+    color: var(--color-ink-muted);
+  }
+  .surface-dark .section-head__title,
+  .surface-dark .section-head__label,
+  .surface-dark .section-head__intro {
+    color: var(--color-on-dark);
+  }
+
+  @media (min-width: 1024px) {
+    .section-head {
+      margin-bottom: 2.5rem;
+    }
+  }
+
+  /* ---------- Blok foto ----------
+     Dimensi terkunci agar tidak ada layout shift.
+     .photo-slot = keadaan menunggu foto asli: kotak kosong
+     bergaris, BUKAN gambar pengganti. */
+  .photo-block {
+    display: block;
+    width: 100%;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    background-color: var(--color-cream);
+  }
+  .photo-block img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .photo-slot {
+    background-color: var(--color-cream);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-md);
+  }
+  .surface-dark .photo-slot {
+    background-color: transparent;
+    border-color: var(--color-line-dark);
+  }
+  .photo-caption {
+    margin-top: 0.5rem;
+    color: var(--color-ink-muted);
+  }
+  .surface-dark .photo-caption {
+    color: var(--color-on-dark);
+    opacity: 0.8;
+  }
+
+  /* ---------- Status ketersediaan ----------
+     Titik + teks. Status tidak pernah disampaikan lewat warna saja. */
+  .status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .status::before {
+    content: "";
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    flex: none;
+  }
+  .status--tersedia {
+    color: var(--color-status-ok);
+  }
+  .status--tersedia::before {
+    background-color: var(--color-status-ok);
+  }
+  .status--terbatas {
+    color: var(--color-status-warn);
+  }
+  .status--terbatas::before {
+    background-color: var(--color-status-warn);
+  }
+
+  /* ---------- Skip link ---------- */
+  .skip-link {
+    position: absolute;
+    left: -9999px;
+    top: 0;
+    z-index: 100;
+  }
+  .skip-link:focus {
+    display: inline-flex;
+    align-items: center;
+    min-height: 3rem;
+    left: 0.5rem;
+    top: 0.5rem;
+    padding: 0.75rem 1rem;
+    background-color: var(--color-primary);
+    color: var(--color-paper);
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-2);
+  }
+
+  /* =============================================================
+     NAVBAR — lapisan mengambang, bukan strip yang memakan ruang.
+     Konten lewat DI BAWAHNYA; itu sebabnya hero ditarik naik
+     setinggi navbar dan foto hero terlihat menembus bahannya.
+     ============================================================= */
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    /* Bahan sedang, bukan tipis: navbar memisahkan wilayah struktural
+       dan teksnya harus tetap terbaca di atas foto hero apa pun yang
+       lewat di bawahnya. Bahan tipis disediakan untuk kontrol kecil. */
+    background-color: var(--material-regular);
+    -webkit-backdrop-filter: blur(var(--material-blur-md)) saturate(var(--material-saturate));
+    backdrop-filter: blur(var(--material-blur-md)) saturate(var(--material-saturate));
+    border-bottom: 1px solid transparent;
+  }
+  .site-header__bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    min-height: var(--header-h);
+  }
+
+  /* Tepi gulir, bukan garis pemisah.
+     Garis 1px di bawah chrome yang mengambang selalu terbaca sebagai
+     jahitan. Yang dipakai di sini: gradasi tipis yang MUNCUL hanya
+     ketika ada konten yang benar-benar lewat di bawahnya, dan hilang
+     lagi saat halaman kembali ke puncak. Digerakkan timeline gulir,
+     bukan JavaScript. */
+  .site-header::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 100%;
+    height: 14px;
+    pointer-events: none;
+    opacity: 0;
+    background: linear-gradient(
+      to bottom,
+      color-mix(in oklab, var(--color-ink) 9%, transparent),
+      transparent
+    );
+  }
+
+  @supports (animation-timeline: scroll()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .site-header::after {
+        animation: tepi-gulir linear both;
+        animation-timeline: scroll(root block);
+        animation-range: 0 24px;
+      }
+      @keyframes tepi-gulir {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+    }
+    /* Tanpa animasi, tepinya tetap ada — hanya tidak lagi terikat gulir. */
+    @media (prefers-reduced-motion: reduce) {
+      .site-header::after {
+        opacity: 1;
+      }
+    }
+  }
+  /* Browser tanpa timeline gulir: tepi tampil permanen dan lembut.
+     Tidak ada yang rusak, hanya satu detail yang hilang. */
+  @supports not (animation-timeline: scroll()) {
+    .site-header::after {
+      opacity: 1;
+    }
+  }
+
+  .wordmark {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 2px;
+    min-height: 3rem;
+    text-decoration: none;
+    color: var(--color-ink);
+  }
+  .wordmark__name {
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: 1.125rem;
+    line-height: 1.2;
+    letter-spacing: -0.014em;
+  }
+  .wordmark__desc {
+    color: var(--color-ink-soft);
+  }
+
+  .nav-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    padding-inline: 0.625rem;
+    border-radius: var(--radius-sm);
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: 0.9375rem;
+    letter-spacing: -0.004em;
+    color: var(--color-ink);
+    text-decoration: none;
+    transition:
+      color var(--dur-warna) linear,
+      background-color var(--dur-warna) linear;
+  }
+  .nav-link:hover {
+    color: var(--color-primary);
+    background-color: color-mix(in oklab, var(--color-ink) 6%, transparent);
+  }
+
+  .nav-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 3rem;
+    height: 3rem;
+    margin-right: -0.75rem;
+    border-radius: var(--radius-sm);
+    color: var(--color-ink);
+    background: none;
+    border: 0;
+  }
+
+  /* ---------- Kelambu peredup ----------
+     Menu adalah tugas yang memblokir: latarnya diredupkan supaya
+     jelas bahwa halaman sedang menunggu. Opasitasnya mengikuti
+     posisi sheet secara terus-menerus, bukan menyala di akhir. */
+  .nav-scrim {
+    position: fixed;
+    inset: 0;
+    /* Tepat di bawah navbar (z-50) dan sheet-nya, tepat di atas seluruh
+       isi halaman termasuk bar WhatsApp (z-40). Chrome navbar tetap
+       terang: ia bagian dari tugas, bukan latar yang sedang menunggu. */
+    z-index: 45;
+    background-color: var(--scrim);
+    opacity: var(--sheet-p, 0);
+    will-change: opacity;
+  }
+
+  /* ---------- Sheet menu ----------
+     Menggantung DARI navbar, bukan mengambil alih layar. Ia muncul
+     dari tempat tombolnya berada dan pergi ke arah yang sama —
+     itulah kenapa ia bisa ditarik ke atas untuk ditutup.
+     touch-action: none karena gerakan jari di sini ditangani penuh
+     oleh main.js; isinya tidak pernah perlu digulir. */
+  /* --sheet-p = 0 tertutup, 1 terbuka penuh. Diatur main.js setiap frame,
+     juga SELAMA jari masih menarik — bukan hanya setelah gerakan selesai.
+     Bahannya mengeras seiring nilai itu: buram, warna, dan bayangan naik
+     bersama-sama, sehingga sheet terbaca sebagai benda yang datang, bukan
+     gambar yang dipudarkan. */
+  .nav-sheet {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    padding: 0.5rem 0 0.25rem;
+    background-color: color-mix(
+      in oklab,
+      var(--color-paper) calc(var(--sheet-p, 0) * 92%),
+      transparent
+    );
+    -webkit-backdrop-filter: blur(calc(var(--sheet-p, 0) * var(--material-blur-lg)))
+      saturate(var(--material-saturate));
+    backdrop-filter: blur(calc(var(--sheet-p, 0) * var(--material-blur-lg)))
+      saturate(var(--material-saturate));
+    border-bottom: 1px solid
+      color-mix(
+        in oklab,
+        var(--color-line) calc(var(--sheet-p, 0) * 100%),
+        transparent
+      );
+    border-radius: 0 0 var(--radius-xl) var(--radius-xl);
+    box-shadow:
+      0 3px 8px
+        color-mix(
+          in oklab,
+          var(--color-ink) calc(var(--sheet-p, 0) * 7%),
+          transparent
+        ),
+      0 28px 56px -16px
+        color-mix(
+          in oklab,
+          var(--color-ink) calc(var(--sheet-p, 0) * 22%),
+          transparent
+        );
+    /* Sheet berada SETELAH bar navbar di DOM, jadi tanpa penanganan
+       khusus ia akan menimpa bar itu ketika digeser ke atas. Yang
+       dipakai bukan z-index melainkan pemotongan: main.js memotong
+       tepat sebanyak bagian yang naik melewati garis bawah navbar,
+       sehingga sheet terlihat keluar-masuk DARI BAWAH bar — jalan
+       masuk dan jalan keluarnya sama persis. Inset negatif di tiga
+       sisi lain menjaga bayangannya tetap utuh. */
+    clip-path: inset(100% -120px -120px -120px);
+    /* Gerakan tegak diserahkan ke main.js, sisanya dibiarkan milik
+       browser. Bukan `none`: itu ikut mematikan cubit-untuk-memperbesar,
+       dan memperbesar layar adalah alat bantu, bukan hiasan. */
+    touch-action: pan-x pinch-zoom;
+    will-change: transform, opacity;
+  }
+  .nav-sheet__link {
+    display: flex;
+    align-items: center;
+    min-height: 3.5rem;
+    padding-inline: 0.75rem;
+    border-radius: var(--radius-sm);
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: 1.0625rem;
+    letter-spacing: -0.008em;
+    color: var(--color-ink);
+    text-decoration: none;
+  }
+  .nav-sheet__link + .nav-sheet__link {
+    box-shadow: 0 -1px 0 var(--color-line);
+  }
+  /* Pegangan: bilah kecil di bibir bawah sheet. Bentuknya sendiri
+     yang memberi tahu bahwa benda ini bisa ditarik. */
+  .nav-sheet__handle {
+    display: flex;
+    justify-content: center;
+    padding: 0.5rem 0 0.375rem;
+  }
+  .nav-sheet__handle::before {
+    content: "";
+    width: 2.25rem;
+    height: 4px;
+    border-radius: 2px;
+    background-color: color-mix(in oklab, var(--color-ink) 22%, transparent);
+  }
+
+  @media (min-width: 1024px) {
+    .wordmark__name {
+      font-size: 1.125rem;
+    }
+  }
+
+  /* =============================================================
+     HERO — foto penuh, panel bahan menimpa bibir bawahnya.
+     Kedalaman datang dari tumpang tindih + bahan, bukan dari
+     bayangan yang ditempel pada kotak datar.
+     ============================================================= */
+
+  /* Hero ditarik naik setinggi navbar supaya fotonya lewat di bawah
+     bahan navbar. Tingginya ditambah sebanyak itu juga agar bagian
+     foto yang benar-benar terlihat tidak berkurang. */
+  .hero {
+    margin-top: calc(-1 * var(--header-h));
+  }
+  .hero__media {
+    width: 100%;
+    height: calc(42vh + var(--header-h));
+  }
+  /* Pada layar pendek foto dipangkas supaya strip fakta tidak
+     terdorong ke luar layar pertama. */
+  @media (max-height: 700px) {
+    .hero__media {
+      height: calc(38vh + var(--header-h));
+    }
+  }
+  .hero__media img,
+  .hero__media .photo-slot {
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
+    border: 0;
+  }
+  .hero__media img {
+    object-fit: cover;
+  }
+
+  /* Panel hero adalah bahan paling tebal di halaman: ia menanggung
+     judul utama, jadi keterbacaannya tidak boleh bergantung pada
+     foto apa yang kebetulan ada di belakangnya. */
+  .hero__panel {
+    position: relative;
+    z-index: 1;
+    margin-top: -2rem;
+    padding: 1.5rem 1.25rem;
+    border-radius: var(--radius-xl);
+    background-color: var(--material-thick);
+    -webkit-backdrop-filter: blur(var(--material-blur-lg)) saturate(var(--material-saturate));
+    backdrop-filter: blur(var(--material-blur-lg)) saturate(var(--material-saturate));
+    border-top: 1px solid var(--material-edge);
+    box-shadow: var(--shadow-3);
+  }
+
+  /* Strip fakta operasional — 4 butir, dipisah garis. */
+  .hero__strip {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border-top: 1px solid var(--color-line);
+  }
+  .hero__strip > * {
+    padding-block: 0.75rem;
+    border-bottom: 1px solid var(--color-line);
+  }
+  .hero__strip > *:nth-child(2n) {
+    padding-left: 1rem;
+    border-left: 1px solid var(--color-line);
+  }
+  .hero__strip > *:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+    padding-left: 0;
+    border-left: 0;
+  }
+  .hero__strip dt {
+    color: var(--color-ink-soft);
+    margin-bottom: 0.25rem;
+  }
+  .hero__strip dd {
+    color: var(--color-ink);
+  }
+
+  @media (min-width: 768px) {
+    .hero__media {
+      height: calc(48vh + var(--header-h));
+    }
+    .hero__panel {
+      margin-top: -2.5rem;
+      padding: 2rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .hero__media {
+      height: calc(62vh + var(--header-h));
+      max-height: calc(620px + var(--header-h));
+    }
+    .hero__panel {
+      margin-top: -3.5rem;
+      padding: 2.5rem;
+    }
+    .hero__strip {
+      display: flex;
+      border-bottom: 1px solid var(--color-line);
+    }
+    .hero__strip > * {
+      flex: 1;
+      padding: 1rem 0 1rem 1.5rem;
+      border-bottom: 0;
+      border-left: 1px solid var(--color-line);
+    }
+    .hero__strip > *:first-child {
+      padding-left: 0;
+      border-left: 0;
+    }
+    .hero__strip > *:nth-child(2n) {
+      padding-left: 1.5rem;
+    }
+  }
+
+  /* =============================================================
+     JENIS IKAN & UKURAN — baris editorial, bukan grid kartu.
+     Ukuran selalu jatuh di posisi yang sama antarbaris supaya
+     mata bisa membandingkan ke bawah.
+     ============================================================= */
+  .product-head,
+  .product-row {
+    display: grid;
+    grid-template-columns: 80px minmax(0, 1fr);
+    column-gap: 1rem;
+    row-gap: 0.5rem;
+    grid-template-areas:
+      "media name"
+      "media spec"
+      "media status"
+      "media use"
+      "media min"
+      "media cta";
+  }
+  .product-head {
+    display: none;
+  }
+
+  .product-row {
+    position: relative;
+    padding: 1.25rem 0.75rem;
+    margin-inline: -0.75rem;
+    border-radius: var(--radius-lg);
+  }
+  /* Pemisah digambar sebagai garis lurus di dalam padding baris.
+     Kalau dipasang sebagai border-bottom, ia akan ikut melengkung
+     mengikuti sudut 20px dan terbaca seperti cacat. */
+  .product-row::after {
+    content: "";
+    position: absolute;
+    left: 0.75rem;
+    right: 0.75rem;
+    bottom: 0;
+    height: 1px;
+    background-color: var(--color-line);
+  }
+  .product-list > .product-row:last-child::after {
+    display: none;
+  }
+  .product-row:hover {
+    background-color: color-mix(in oklab, var(--color-ink) 3%, transparent);
+  }
+  .product-row__media {
+    grid-area: media;
+    align-self: start;
+    width: 80px;
+    height: 80px;
+  }
+  .product-row__media img,
+  .product-row__media .photo-slot {
+    width: 100%;
+    height: 100%;
+    /* Sudut bersarang: radius luar 20px - padding 12px = 8px. */
+    border-radius: 8px;
+  }
+  .product-row__media img {
+    object-fit: cover;
+  }
+
+  .product-row__name {
+    grid-area: name;
+  }
+  .product-row__spec {
+    grid-area: spec;
+    color: var(--color-ink);
+  }
+  .product-row__status {
+    grid-area: status;
+  }
+  .product-row__use {
+    grid-area: use;
+    color: var(--color-ink-muted);
+  }
+  .product-row__min {
+    grid-area: min;
+    color: var(--color-ink-muted);
+  }
+  .product-row__cta {
+    grid-area: cta;
+    margin-top: 0.25rem;
+  }
+
+  /* Hanya tombolnya yang merupakan target sentuh — barisnya sendiri
+     tidak dapat diklik. */
+  .btn-action--row {
+    min-height: 3rem;
+    padding-inline: 1.25rem;
+    border-radius: var(--radius-sm);
+  }
+
+  @media (min-width: 768px) {
+    .product-head,
+    .product-row {
+      grid-template-columns:
+        104px minmax(0, 3fr) minmax(0, 1.6fr) minmax(0, 1.4fr)
+        150px;
+      grid-template-areas:
+        "media name spec status cta"
+        "media use  min  status cta";
+      column-gap: 1.25rem;
+      row-gap: 0.25rem;
+      align-items: start;
+    }
+    .product-row__media {
+      width: 104px;
+      height: 104px;
+    }
+    .product-row__status {
+      align-self: center;
+    }
+    .product-row__cta {
+      grid-area: cta;
+      align-self: center;
+      margin-top: 0;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .product-head,
+    .product-row {
+      grid-template-columns:
+        132px minmax(0, 4fr) minmax(0, 2fr) minmax(0, 2fr)
+        160px;
+      column-gap: 1.5rem;
+    }
+    .product-head {
+      display: grid;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--color-line);
+      color: var(--color-ink-muted);
+    }
+    .product-row {
+      min-height: 132px;
+      align-content: center;
+    }
+    .product-row__media {
+      width: 132px;
+      height: 132px;
+    }
+  }
+
+  /* =============================================================
+     KESESUAIAN PER JENIS USAHA — blok editorial berselang,
+     bukan empat kartu identik.
+     ============================================================= */
+  .biz-block {
+    display: grid;
+    gap: 1.25rem;
+  }
+  .biz-block + .biz-block {
+    margin-top: 2.5rem;
+    padding-top: 2.5rem;
+    border-top: 1px solid var(--color-line);
+  }
+  .biz-block__media {
+    aspect-ratio: 3 / 2;
+  }
+  .biz-block__media img,
+  .biz-block__media .photo-slot {
+    width: 100%;
+    height: 100%;
+    border-radius: var(--radius-lg);
+  }
+  .biz-block__media img {
+    object-fit: cover;
+  }
+  .biz-block__konteks {
+    color: var(--color-ink-muted);
+    margin-top: 0.5rem;
+  }
+  .biz-block__data {
+    margin-top: 1.25rem;
+  }
+
+  @media (min-width: 768px) {
+    .biz-block {
+      grid-template-columns: 1fr 1fr;
+      column-gap: 1.5rem;
+      align-items: start;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .biz-block {
+      grid-template-columns: 5fr 7fr;
+      column-gap: 2rem;
+    }
+    .biz-block + .biz-block {
+      margin-top: 3rem;
+      padding-top: 3rem;
+    }
+    .biz-block:nth-child(even) {
+      grid-template-columns: 7fr 5fr;
+    }
+    .biz-block:nth-child(even) .biz-block__media {
+      grid-column: 2;
+      grid-row: 1;
+    }
+    .biz-block:nth-child(even) .biz-block__body {
+      grid-column: 1;
+      grid-row: 1;
+    }
+  }
+
+  /* =============================================================
+     KETENTUAN SUPPLY
+     ============================================================= */
+  .supply-grid {
+    display: grid;
+    gap: 2rem;
+  }
+  .supply-block__title {
+    margin-bottom: 1rem;
+  }
+  .area-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 1.5rem;
+  }
+  .area-list li {
+    padding-block: 0.625rem;
+    border-bottom: 1px solid var(--color-line-strong);
+    font-family: var(--font-sans);
+    font-weight: 400;
+    font-size: clamp(0.9375rem, 0.9rem + 0.25vw, 1.0625rem);
+    line-height: 1.5;
+  }
+  .area-note {
+    margin-top: 1rem;
+    color: var(--color-ink-muted);
+  }
+  .area-cta {
+    margin-top: 0.5rem;
+  }
+
+  /* Garis di atas latar krem memakai warna yang lebih gelap. */
+  .surface-cream .data-row {
+    border-bottom-color: var(--color-line-strong);
+  }
+
+  @media (min-width: 768px) {
+    .supply-grid {
+      grid-template-columns: 1fr 1fr;
+      column-gap: 2rem;
+      align-items: start;
+    }
+    .supply-areas {
+      grid-column: 1;
+      grid-row: 1;
+    }
+    .supply-table {
+      grid-column: 2;
+      grid-row: 1;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .supply-grid {
+      grid-template-columns: 7fr 5fr;
+      column-gap: 3rem;
+    }
+  }
+
+  /* =============================================================
+     PENANGANAN & KONSISTENSI — satu-satunya rangkaian foto
+     full-bleed dan satu-satunya blok gelap besar di tengah halaman.
+     ============================================================= */
+  .tahap-strip {
+    display: grid;
+    gap: 2rem;
+    margin-top: 2rem;
+  }
+  .tahap {
+    margin: 0;
+  }
+  .tahap__media {
+    aspect-ratio: 4 / 5;
+  }
+  .tahap__media img,
+  .tahap__media .photo-slot {
+    width: 100%;
+    height: 100%;
+  }
+  .tahap__media img {
+    object-fit: cover;
+  }
+  .tahap__caption {
+    padding-inline: 1.25rem;
+    margin-top: 0.75rem;
+  }
+  .tahap__num {
+    display: block;
+    color: var(--color-on-dark);
+    opacity: 0.6;
+    margin-bottom: 0.25rem;
+  }
+  .tahap__judul {
+    color: var(--color-cream);
+  }
+  .tahap__kalimat {
+    margin-top: 0.5rem;
+    color: var(--color-on-dark);
+    opacity: 0.85;
+  }
+
+  @media (min-width: 768px) {
+    .tahap-strip {
+      grid-template-columns: 1fr 1fr;
+      gap: 0.5rem;
+    }
+    .tahap__caption {
+      padding-inline: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .tahap-strip {
+      grid-template-columns: repeat(4, 1fr);
+      margin-top: 2.5rem;
+    }
+    .tahap__caption {
+      margin-bottom: 0;
+    }
+  }
+
+  /* Satu-satunya gerak-saat-gulir di halaman ini.
+     Arah gerakannya menunjuk ke arah tujuannya: foto naik 10px
+     sambil membesar dari 0.98 — tumbuh ke arah pembaca, bukan
+     sekadar berubah opasitas di tempat. Dijalankan timeline
+     tampilan, jadi ia terikat posisi gulir dan tidak pernah
+     tertinggal di tengah. */
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .tahap {
+        animation: tahap-masuk linear both;
+        animation-timeline: view();
+        animation-range: entry 5% entry 55%;
+      }
+      @keyframes tahap-masuk {
+        from {
+          opacity: 0;
+          transform: translateY(10px) scale(0.985);
+        }
+        to {
+          opacity: 1;
+          transform: none;
+        }
+      }
+    }
+  }
+
+  /* =============================================================
+     CARA PESAN — section paling sepi di halaman.
+     ============================================================= */
+  .col-narrow {
+    max-width: 680px;
+  }
+
+  .langkah {
+    padding-block: 1.5rem;
+    border-bottom: 1px solid var(--color-line);
+  }
+  .langkah:last-child {
+    border-bottom: 0;
+  }
+  .langkah__num {
+    display: block;
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: 2rem;
+    line-height: 1;
+    letter-spacing: -0.01em;
+    color: var(--color-ink-muted);
+    margin-bottom: 0.5rem;
+  }
+  .langkah__kalimat {
+    margin-top: 0.5rem;
+    color: var(--color-ink-muted);
+  }
+
+  @media (min-width: 1024px) {
+    .langkah {
+      display: grid;
+      grid-template-columns: 88px 1fr;
+      column-gap: 1.5rem;
+      padding-block: 1.75rem;
+      align-items: start;
+    }
+    .langkah__num {
+      font-size: 3rem;
+      margin-bottom: 0;
+    }
+  }
+
+  /* =============================================================
+     BUKTI & IDENTITAS BISNIS
+     ============================================================= */
+  .bukti-grid {
+    display: grid;
+    gap: 2rem;
+  }
+  .bukti-photos {
+    order: 1;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  .bukti-facts {
+    order: 2;
+  }
+  /* Mobile menampilkan maksimal dua foto. */
+  .bukti-photos > *:nth-child(n + 3) {
+    display: none;
+  }
+  .bukti-photo__media {
+    aspect-ratio: 3 / 2;
+  }
+  .bukti-photo__media img,
+  .bukti-photo__media .photo-slot {
+    width: 100%;
+    height: 100%;
+    border-radius: var(--radius-md);
+  }
+  .bukti-photo__media img {
+    object-fit: cover;
+  }
+
+  .wa-number {
+    display: inline-flex;
+    align-items: center;
+    min-height: 3rem;
+    color: var(--color-ink);
+    text-decoration: none;
+    margin-top: 0.25rem;
+  }
+  .wa-number:hover {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+
+  .testimoni-wrap {
+    margin-top: 2.5rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--color-line);
+    max-width: 760px;
+  }
+  .testimoni + .testimoni {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--color-line);
+  }
+  .testimoni__sumber {
+    margin-top: 0.75rem;
+    color: var(--color-ink-muted);
+    font-style: normal;
+  }
+
+  @media (min-width: 768px) {
+    .bukti-grid {
+      grid-template-columns: 1fr 1fr;
+      column-gap: 2rem;
+      align-items: start;
+    }
+    .bukti-facts {
+      order: 0;
+      grid-column: 1;
+      grid-row: 1;
+    }
+    .bukti-photos {
+      order: 0;
+      grid-column: 2;
+      grid-row: 1;
+      grid-template-columns: 1fr 1fr;
+    }
+    .bukti-photos > *:nth-child(n + 3) {
+      display: block;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .bukti-grid {
+      grid-template-columns: 5fr 7fr;
+      column-gap: 3rem;
+    }
+    .bukti-photos {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  /* =============================================================
+     FAQ — accordion editorial: garis dan tipografi saja.
+     Tingginya digerakkan pegas di main.js, BUKAN transition CSS:
+     pertanyaan yang diketuk dua kali dengan cepat harus berbalik
+     dari tinggi yang sedang tampil, bukan menunggu selesai dulu.
+     ============================================================= */
+  .faq-item {
+    border-bottom: 1px solid var(--color-line);
+  }
+  .faq-q {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    /* 100% + dua kali margin negatif, supaya sisi kanannya tidak
+       tertinggal 12px dari sisi kirinya. */
+    width: calc(100% + 1.5rem);
+    min-height: 3.5rem;
+    padding: 1.25rem 0.75rem;
+    margin-inline: -0.75rem;
+    border-radius: var(--radius-md);
+    background: none;
+    border: 0;
+    text-align: left;
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: 1.125rem;
+    line-height: 1.35;
+    letter-spacing: -0.012em;
+    color: var(--color-ink);
+  }
+  .faq-q:hover {
+    color: var(--color-primary);
+  }
+  .faq-sign {
+    flex: none;
+    color: var(--color-ink-muted);
+  }
+  /* Tanda + menjadi − dengan memutar garis tegaknya, bukan dengan
+     menghilangkannya: perputaran itu memperlihatkan bahwa keduanya
+     adalah benda yang sama dalam dua keadaan. */
+  .faq-sign__v {
+    transform-origin: 12px 12px;
+    transition:
+      transform var(--dur-spring-ui) var(--ease-spring-ui),
+      opacity 160ms linear;
+  }
+  .faq-item[data-open="true"] .faq-sign__v {
+    transform: rotate(90deg);
+    opacity: 0;
+  }
+
+  /* Tinggi diatur main.js dalam piksel. Tidak ada transition di sini:
+     kalau ada, pegas dan transition akan berebut properti yang sama. */
+  .faq-a {
+    height: 0;
+    overflow: hidden;
+    visibility: hidden;
+  }
+  .faq-item[data-open="true"] .faq-a {
+    visibility: visible;
+  }
+  .faq-a p {
+    max-width: 640px;
+    padding-bottom: 1.25rem;
+    color: var(--color-ink-muted);
+  }
+  .faq-a p + p {
+    padding-top: 0.75rem;
+  }
+
+  @media (min-width: 1024px) {
+    .faq-q {
+      padding-block: 1.5rem;
+    }
+    .faq-a p {
+      padding-bottom: 1.5rem;
+    }
+  }
+
+  /* =============================================================
+     CTA PENUTUP — satu-satunya blok rata tengah di halaman.
+     ============================================================= */
+  .col-cta {
+    max-width: 640px;
+    margin-inline: auto;
+    text-align: center;
+  }
+  .cta-daftar {
+    display: grid;
+    color: var(--color-on-dark);
+  }
+  .cta-daftar li {
+    padding-block: 0.625rem;
+    border-bottom: 1px solid var(--color-line-dark);
+  }
+  .cta-kontak {
+    color: var(--color-cream);
+  }
+
+  @media (min-width: 768px) {
+    .cta-daftar {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.5rem 1rem;
+      border-top: 1px solid var(--color-line-dark);
+      border-bottom: 1px solid var(--color-line-dark);
+      padding-block: 0.75rem;
+    }
+    .cta-daftar li {
+      padding-block: 0;
+      border-bottom: 0;
+    }
+    .cta-daftar li + li::before {
+      content: "\00b7";
+      margin-right: 1rem;
+      opacity: 0.5;
+    }
+  }
+
+  /* =============================================================
+     FOOTER
+     ============================================================= */
+  .site-footer {
+    border-top: 1px solid var(--color-line-dark);
+    padding-block: 2rem;
+  }
+  .footer-grid {
+    display: grid;
+    gap: 1.5rem;
+  }
+  .footer-col + .footer-col {
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--color-line-dark);
+  }
+  .footer-col h2 {
+    color: var(--color-cream);
+    margin-bottom: 0.75rem;
+  }
+  .footer-col li + li {
+    margin-top: 0.5rem;
+  }
+  .footer-col a {
+    color: var(--color-on-dark);
+    text-decoration: none;
+  }
+  .footer-col a:hover {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+  .footer-copyright {
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--color-line-dark);
+    color: var(--color-on-dark);
+    opacity: 0.65;
+    font-size: 0.8125rem;
+  }
+  /* Ruang di bawah agar footer tidak tertutup bar sticky di mobile. */
+  .footer-spacer {
+    height: 5rem;
+  }
+
+  @media (min-width: 768px) {
+    .site-footer {
+      padding-block: 3rem;
+    }
+    .footer-grid {
+      grid-template-columns: repeat(2, 1fr);
+      column-gap: 2rem;
+      row-gap: 2rem;
+    }
+    .footer-col + .footer-col {
+      padding-top: 0;
+      border-top: 0;
+    }
+    .footer-spacer {
+      display: none;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .footer-grid {
+      grid-template-columns: repeat(4, 1fr);
+      column-gap: 3rem;
+    }
+  }
+
+  /* =============================================================
+     BAR WHATSAPP MENGAMBANG (mobile)
+     Bahan tembus dengan bibir atas yang terang, bukan kotak putih
+     solid. Kemunculannya "mengeras" — buram, skala, dan opasitas
+     bergerak bersama — sehingga terbaca sebagai bahan yang datang,
+     bukan gambar yang dipudarkan. Nilainya diatur main.js.
+     ============================================================= */
+  .sticky-cta {
+    position: fixed;
+    inset-inline: 0;
+    bottom: 0;
+    z-index: 40;
+    padding: 0.5rem 1.25rem calc(0.5rem + env(safe-area-inset-bottom, 0px));
+    background-color: color-mix(
+      in oklab,
+      var(--color-paper) calc(var(--cta-progress, 0) * 82%),
+      transparent
+    );
+    -webkit-backdrop-filter: blur(calc(var(--cta-progress, 0) * 24px))
+      saturate(var(--material-saturate));
+    backdrop-filter: blur(calc(var(--cta-progress, 0) * 24px))
+      saturate(var(--material-saturate));
+    border-top: 1px solid
+      color-mix(
+        in oklab,
+        var(--material-edge) calc(var(--cta-progress, 0) * 100%),
+        transparent
+      );
+    box-shadow: var(--shadow-2);
+    transform: translateY(calc((1 - var(--cta-progress, 0)) * 100%));
+    opacity: var(--cta-progress, 0);
+    will-change: transform, opacity;
+  }
+  .sticky-cta[data-show="false"] {
+    pointer-events: none;
+  }
+
+  @media (min-width: 768px) {
+    .sticky-cta {
+      display: none;
+    }
+  }
+
+  /* ---------- Tab teks ----------
+     Hanya dipakai bila jenis ikan >= 8. Bukan tombol pil. */
+  .text-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+  }
+  .tab {
+    min-height: 2.75rem;
+    padding: 0;
+    background: none;
+    border: 0;
+    border-bottom: 2px solid transparent;
+    color: var(--color-ink-muted);
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: 0.9375rem;
+    transition:
+      color var(--dur-warna) linear,
+      border-color var(--dur-warna) linear;
+  }
+  .tab[aria-pressed="true"] {
+    color: var(--color-ink);
+    border-bottom-color: var(--color-primary);
+  }
+
+  /* ---------- Banner staging ----------
+     Perkakas pengaman, bukan section konten. Hilang otomatis saat
+     _meta.dataStatus diubah ke "ASLI". */
+  .staging-banner {
+    background-color: var(--color-status-warn);
+    color: var(--color-paper);
+    padding: 0.375rem 1.25rem;
+    text-align: center;
+  }
+}
+
+/* =============================================================
+   SUDUT KONTINU
+   Sudut lingkaran punya patahan kelengkungan yang terlihat pada
+   radius besar. superellipse menghaluskannya. Progressive
+   enhancement murni: browser tanpa dukungan tetap dapat sudut biasa.
+   ============================================================= */
+@supports (corner-shape: superellipse(2)) {
+  .hero__panel,
+  .nav-sheet,
+  .product-row,
+  .btn-action,
+  .biz-block__media img,
+  .biz-block__media .photo-slot,
+  .photo-block,
+  .photo-slot {
+    corner-shape: superellipse(2.4);
+  }
+}
+
+/* =============================================================
+   PREFERENSI SISTEM
+   Ketiganya independen dan ketiganya dihormati. "Kurangi gerakan"
+   BUKAN berarti tanpa umpan balik — hanya umpan balik yang tidak
+   menggoyang ruang.
+   ============================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  /* Pudar-silang pendek menggantikan geser, pegas, dan skala.
+     Perubahan warna dibiarkan: ia membantu memahami, tidak
+     menggoyang apa pun. */
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 120ms !important;
+  }
+  [data-press]:active,
+  [data-press].is-pressed,
+  [data-press="lembut"]:active,
+  [data-press="lembut"].is-pressed {
+    transform: none;
+    background-color: color-mix(in oklab, var(--color-ink) 6%, transparent);
+  }
+  .sticky-cta {
+    transform: none;
+  }
+  .nav-sheet {
+    transform: none !important;
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  /* Bahan menjadi padat: opasitas dinaikkan penuh, buram dimatikan.
+     Bobot hierarki lalu dibawa bayangan dan garis. */
+  .site-header,
+  .hero__panel,
+  .nav-sheet,
+  .sticky-cta {
+    background-color: var(--color-paper) !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+  .site-header {
+    border-bottom-color: var(--color-line);
+  }
+  .hero__panel,
+  .nav-sheet,
+  .sticky-cta {
+    border-top-color: var(--color-line);
+  }
+  .nav-scrim {
+    background-color: color-mix(in oklab, var(--color-ink) 55%, transparent);
+  }
+}
+
+@media (prefers-contrast: more) {
+  /* Latar nyaris padat plus garis tegas yang jelas terdefinisi. */
+  :root {
+    --color-ink-muted: #45403a;
+    --color-ink-soft: #2b2723;
+    --color-line: #9a948a;
+    --color-line-strong: #7d776d;
+  }
+  .site-header,
+  .hero__panel,
+  .nav-sheet,
+  .sticky-cta {
+    background-color: var(--color-paper) !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+    border: 1px solid var(--color-ink);
+  }
+  .site-header {
+    border-width: 0 0 1px;
+  }
+  .btn-action {
+    border: 1px solid var(--color-ink);
+  }
+  :focus-visible {
+    outline-width: 3px;
+  }
+}

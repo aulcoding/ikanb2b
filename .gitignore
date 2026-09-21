@@ -1,0 +1,5 @@
+node_modules/
+dist/
+
+# Cadangan data lokal, bukan bagian dari proyek.
+*.bak
